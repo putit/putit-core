@@ -1,0 +1,10 @@
+temp
+pids/*
+bin/run.sh
+logs/*
+vendor
+*_logger
+db/*.sqlite3
+config/database.yml-origin
+.ruby-version
+config/settings.yml

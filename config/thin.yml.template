@@ -1,0 +1,18 @@
+---
+user: APP_USER
+group: APP_GROUP
+pid: APP_DIR/tmp/thin.pid
+timeout: 30
+wait: 30
+log: APP_DIR/log/putit-core.log
+max_conns: 1024
+require: []
+environment: production
+max_persistent_conns: 512
+servers: 1
+#threaded: true
+no-epoll: true
+daemonize: true
+port: 9292
+tag: putit-core
+chdir: APP_DIR

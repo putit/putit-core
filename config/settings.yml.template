@@ -1,0 +1,56 @@
+putit_core_url: 'localhost:9292'
+putit_auth_url: 'localhost:3000'
+
+support_events: true
+
+plugins_path: 'PLUGINS_PATH_TEMPLATE'
+
+logging:
+  access:
+    output: 'log/putit-access.log'
+    level: 'info'
+    age: 'daily'
+    layout: 'plain'
+  sql:
+    output: 'log/putit-sql.log'
+    level: 'info'
+    age: 'daily'
+    layout: 'plain'
+  app:
+    output: 'stdout'
+    level: 'debug'
+    age: 'daily'
+    layout: 'plain'
+  deployment:
+    output: 'log/putit-deployment.log'
+    level: 'info'
+    age: 'daily'
+    layout: 'plain'
+  error:
+    output: 'log/putit-error.log'
+    level: 'info'
+    age: 'daily'
+    layout: 'plain'
+  service:
+    output: 'log/putit-external-service.log'
+    level: 'info'
+    age: 'daily'
+    layout: 'plain'
+
+putit_playbooks_path: '/tmp/opt/putit/playbooks'
+putit_ansible_ec2_ini_path: '/etc/ansible/ec2.ini'
+putit_ansible_ec2_py_path: '/etc/ansible/ec2.py'
+
+# values of those properties if set won't be logged
+anonymize_properties: [ 'password', 'confidential', 'passphrase' ]
+
+mailer:
+  production: 
+    smtp_server: 'localhost'
+    smtp_port: '25'
+  development:
+    smtp_server: 'localhost'
+    smtp_port: '25'
+  test:
+    smtp_server: 'localhost'
+    smtp_port: '25'

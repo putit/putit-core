@@ -1,0 +1,21 @@
+putit_core_url: 'localhost:9292'
+putit_auth_url: 'localhost:3000'
+jira:
+  username: 'putit'
+  password: 'password'
+mailer:
+  development:
+    smtp_server: 'test.server'
+    smtp_port: '587'
+    smtp_username: 'test@putit.io'
+    smtp_password: '123456'
+    authentication: 'plain'
+    domain: 'test.server'
+  test:
+    smtp_server: 'test.server'
+    smtp_port: '587'
+    smtp_username: 'test@putit.io'
+    smtp_password: '123456'
+    authentication: 'plain'
+    domain: 'test.server'
+support_events: true

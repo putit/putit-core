@@ -1,0 +1,112 @@
+#!/bin/bash
+
+ACTION=$1
+
+PUTIT_APP_NAME="APP_NAME_TEMPLATE"
+PUTIT_APP_DIR="APP_DIR_TEMPLATE"
+
+function set_vars {
+  export PORT="$(grep 'port' ${PUTIT_APP_DIR}/config/thin.yml | awk '{print $2}')"
+  export PID_FILE="${PUTIT_APP_DIR}/tmp/thin.${PORT}.pid"
+  export GEM_HOME="${PUTIT_APP_DIR}/lib/bundler"
+  BUNDLE=$GEM_HOME/bin/bundle
+}
+
+get_pid_from_pid_file() {
+  local pid=`cat ${PID_FILE}`
+  if [ ! -z ${pid} ];then
+    echo ${pid}
+  else 
+    echo -e "$0: Error: ${PID_FILE} looks empty!"
+    exit 1
+  fi
+}
+
+is_running() {
+  local result=`ps uax | grep -v grep | grep -c "thin.*${PUTIT_APP_NAME}"`
+  if [ ${result} -gt 0 ]; then
+    # process is running
+    echo 1
+  elif [ ${result} -eq 0 ]; then
+    # process not running
+    echo 0
+  fi
+}
+
+kill_by_name() {
+  ps x | grep -v grep | grep "thin.*${PUTIT_APP_NAME}" | awk '{print $1}' | xargs kill
+  if [ "$?" -eq "0" ]; then
+    echo -e "$0: Process ${PUTIT_APP_NAME} killed using kill."
+  else
+    echo "$0: [ERROR] Unable to kill process ${PUTIT_APP_NAME}. Exiting."
+    exit 1
+  fi
+}
+
+status_putit_app() {
+  if [ "$(is_running)" -eq "1" ]; then
+    echo -e "${PUTIT_APP_NAME} is running."
+  elif [ "$(is_running)" -eq "0" ]; then
+    echo -e "${PUTIT_APP_NAME} is not running."
+  else
+    echo -e "Unknown status."
+  fi
+}
+
+start_putit_app () {
+  if [ -f ${PID_FILE} ]; then
+    local pid=$(get_pid_from_pid_file)
+    if [ "$(is_running)" -eq "1" ]; then
+      echo -e "${PUTIT_APP_NAME} is already running pid: ${pid}"
+    elif [ "$(is_running)" -eq "0" ]; then
+      echo -e "$0: ${PID_FILE} exist but process is not running, removing pid file..."
+      echo -e "$0: Try to start it one more time:\n $0 start"
+      rm -f ${PID_FILE}
+    fi
+  else
+    echo "Starting thin ${PUTIT_APP_NAME}..."
+    ${BUNDLE} exec thin -C ${PUTIT_APP_DIR}/config/thin.yml start
+  fi
+}
+
+stop_putit_app () {
+  if [ -f ${PID_FILE} ]; then
+    local pid=$(get_pid_from_pid_file)
+    if [ "$(is_running)" -eq "1" ]; then
+      ${BUNDLE} exec thin -C ${PUTIT_APP_DIR}/config/thin.yml stop
+    elif [ "$(is_running)" -eq "0" ]; then
+      echo -e "$0: ${PID_FILE} exist but process is not running, removing pid file..."
+      rm -f ${PID_FILE}
+    fi
+  else
+    if [ "$(is_running)" -eq "1" ]; then
+      kill_by_name
+    elif [ "$(is_running)" -eq "0" ]; then
+      echo -e "$0: Pid file ${PID_FILE} doesn't exist and procces is not running."
+    fi
+  fi
+
+}
+
+
+case "$ACTION" in
+  start)
+    logger startting ${PUTIT_APP_NAME}
+    set_vars
+    start_putit_app
+    exit 0
+    ;;
+  stop)
+    logger stopping ${PUTIT_APP_NAME}
+    set_vars
+    stop_putit_app
+    exit 0
+    ;;
+  status)
+    set_vars
+    status_putit_app
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|status}"
+    exit 2
+esac

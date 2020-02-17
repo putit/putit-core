@@ -1,0 +1,49 @@
+# These are default Putit database configs based on SQLite3. They are meant for evaluation purposes only.
+
+users:
+  adapter: sqlite3
+  database: ../putit-auth/db/<%= ENV['RACK_ENV'] %>.sqlite3
+  pool: 10
+  timeout: 10000
+
+production:
+  adapter: sqlite3
+  database: db/production.sqlite3
+  pool: 10
+  timeout: 10000
+
+development:
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: 10
+  timeout: 10000
+
+test:
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 10
+  timeout: 10000
+
+
+# This is an example of production-ready PostgreSQL config.
+
+# production:
+#   adapter: postgresql
+#   encoding: unicode
+#   database: putit_core
+#   host: 127.0.0.1
+#   port: 5432
+#   pool: 10
+#   username: putit
+#   password: putit
+
+# users:
+#   adapter: postgresql
+#   encoding: unicode
+#   database: putit_auth
+#   host: 127.0.0.1
+#   port: 5432
+#   pool: 10
+#   username: putit
+#   password: putit
+

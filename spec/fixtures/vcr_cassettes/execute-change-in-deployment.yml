@@ -1,0 +1,240 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://dev-jira.putit.lan/rest/api/2/issue/10207
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic cHV0aXQ6VHVTU2s=
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 11 Aug 2017 10:14:01 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Arequestid:
+      - 614x19316x1
+      X-Asen:
+      - SEN-L10104601
+      Set-Cookie:
+      - JSESSIONID=BB59C75BAB223429461C68371BD0A6D7;path=/;HttpOnly
+      - atlassian.xsrf.token=BYRG-OFU1-8S04-FDML|d05c3caadb6a0576116ddcd249b172932e4e3eb9|lin;path=/
+      X-Seraph-Loginreason:
+      - OK
+      X-Asessionid:
+      - m1ci6l
+      X-Ausername:
+      - putit
+      Cache-Control:
+      - no-cache, no-store, no-transform
+      X-Content-Type-Options:
+      - nosniff
+    body:
+      encoding: UTF-8
+      string: '{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"10207","self":"https://dev-jira.putit.lan/rest/api/2/issue/10207","key":"PUTR-43","fields":{"issuetype":{"self":"https://dev-jira.putit.lan/rest/api/2/issuetype/10100","id":"10100","description":"PUTIT
+        Release","iconUrl":"https://dev-jira.putit.lan/secure/viewavatar?size=xsmall&avatarId=10300&avatarType=issuetype","name":"Release","subtask":false,"avatarId":10300},"components":[],"description":null,"project":{"self":"https://dev-jira.putit.lan/rest/api/2/project/10200","id":"10200","key":"PUTR","name":"PUTIT_RELEASES","avatarUrls":{"48x48":"https://dev-jira.putit.lan/secure/projectavatar?pid=10200&avatarId=10325","24x24":"https://dev-jira.putit.lan/secure/projectavatar?size=small&pid=10200&avatarId=10325","16x16":"https://dev-jira.putit.lan/secure/projectavatar?size=xsmall&pid=10200&avatarId=10325","32x32":"https://dev-jira.putit.lan/secure/projectavatar?size=medium&pid=10200&avatarId=10325"}},"fixVersions":[],"customfield_10005":"0|i0003r:","attachment":[],"resolutiondate":null,"workratio":-1,"summary":"New
+        Release Q3/2017","lastViewed":null,"watches":{"self":"https://dev-jira.putit.lan/rest/api/2/issue/PUTR-43/watchers","watchCount":1,"isWatching":false},"creator":{"self":"https://dev-jira.putit.lan/rest/api/2/user?username=mwolsza","name":"mwolsza","key":"mwolsza","emailAddress":"mateusz@putit.io","avatarUrls":{"48x48":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=48","24x24":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=24","16x16":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=16","32x32":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=32"},"displayName":"Mateusz
+        Wolsza","active":true,"timeZone":"UTC"},"subtasks":[{"id":"10208","key":"PUTR-44","self":"https://dev-jira.putit.lan/rest/api/2/issue/10208","fields":{"summary":"First
+        deployment","status":{"self":"https://dev-jira.putit.lan/rest/api/2/status/10102","description":"Change
+        is Approved and it can be deployed.","iconUrl":"https://dev-jira.putit.lan/images/icons/statuses/generic.png","name":"Approved","id":"10102","statusCategory":{"self":"https://dev-jira.putit.lan/rest/api/2/statuscategory/4","id":4,"key":"indeterminate","colorName":"yellow","name":"In
+        Progress"}},"priority":{"self":"https://dev-jira.putit.lan/rest/api/2/priority/3","iconUrl":"https://dev-jira.putit.lan/images/icons/priorities/medium.svg","name":"Medium","id":"3"},"issuetype":{"self":"https://dev-jira.putit.lan/rest/api/2/issuetype/10101","id":"10101","description":"PUTIT
+        Release order","iconUrl":"https://dev-jira.putit.lan/secure/viewavatar?size=xsmall&avatarId=10316&avatarType=issuetype","name":"Change","subtask":true,"avatarId":10316}}},{"id":"10212","key":"PUTR-48","self":"https://dev-jira.putit.lan/rest/api/2/issue/10212","fields":{"summary":"Second
+        deployment","status":{"self":"https://dev-jira.putit.lan/rest/api/2/status/10102","description":"Change
+        is Approved and it can be deployed.","iconUrl":"https://dev-jira.putit.lan/images/icons/statuses/generic.png","name":"Approved","id":"10102","statusCategory":{"self":"https://dev-jira.putit.lan/rest/api/2/statuscategory/4","id":4,"key":"indeterminate","colorName":"yellow","name":"In
+        Progress"}},"issuetype":{"self":"https://dev-jira.putit.lan/rest/api/2/issuetype/10101","id":"10101","description":"PUTIT
+        Release order","iconUrl":"https://dev-jira.putit.lan/secure/viewavatar?size=xsmall&avatarId=10316&avatarType=issuetype","name":"Change","subtask":true,"avatarId":10316}}}],"created":"2017-08-03T11:42:38.751+0000","reporter":{"self":"https://dev-jira.putit.lan/rest/api/2/user?username=mwolsza","name":"mwolsza","key":"mwolsza","emailAddress":"mateusz@putit.io","avatarUrls":{"48x48":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=48","24x24":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=24","16x16":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=16","32x32":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=32"},"displayName":"Mateusz
+        Wolsza","active":true,"timeZone":"UTC"},"customfield_10000":null,"customfield_10100":"Q3/2017","customfield_10201":"2017-08-14","customfield_10202":"2017-08-31","customfield_10004":null,"environment":null,"versions":[],"duedate":null,"comment":{"comments":[],"maxResults":0,"total":0,"startAt":0},"issuelinks":[],"votes":{"self":"https://dev-jira.putit.lan/rest/api/2/issue/PUTR-43/votes","votes":0,"hasVoted":false},"assignee":{"self":"https://dev-jira.putit.lan/rest/api/2/user?username=mwolsza","name":"mwolsza","key":"mwolsza","emailAddress":"mateusz@putit.io","avatarUrls":{"48x48":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=48","24x24":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=24","16x16":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=16","32x32":"https://secure.gravatar.com/avatar/fb732785ed74f07a2480587cdc44e89c?d=mm&s=32"},"displayName":"Mateusz
+        Wolsza","active":true,"timeZone":"UTC"},"updated":"2017-08-08T22:02:56.074+0000","status":{"self":"https://dev-jira.putit.lan/rest/api/2/status/1","description":"The
+        issue is open and ready for the assignee to start work on it.","iconUrl":"https://dev-jira.putit.lan/images/icons/statuses/open.png","name":"Open","id":"1","statusCategory":{"self":"https://dev-jira.putit.lan/rest/api/2/statuscategory/2","id":2,"key":"new","colorName":"blue-gray","name":"To
+        Do"}}}}'
+    http_version: 
+  recorded_at: Fri, 11 Aug 2017 10:41:47 GMT
+- request:
+    method: get
+    uri: https://dev-jira.putit.lan/rest/api/2/issue/10207/editmeta
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic cHV0aXQ6VHVTU2s=
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 11 Aug 2017 10:14:02 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Arequestid:
+      - 614x19317x1
+      X-Asen:
+      - SEN-L10104601
+      Set-Cookie:
+      - JSESSIONID=7F417EB99B3C488271D5D19D5C4F8178;path=/;HttpOnly
+      - atlassian.xsrf.token=BYRG-OFU1-8S04-FDML|cfa4c019f23eb164b9223410baf94fbc2fb408da|lin;path=/
+      X-Seraph-Loginreason:
+      - OK
+      X-Asessionid:
+      - m0pynv
+      X-Ausername:
+      - putit
+      Cache-Control:
+      - no-cache, no-store, no-transform
+      X-Content-Type-Options:
+      - nosniff
+    body:
+      encoding: UTF-8
+      string: '{"fields":{"summary":{"required":true,"schema":{"type":"string","system":"summary"},"name":"Summary","operations":["set"]},"issuetype":{"required":true,"schema":{"type":"issuetype","system":"issuetype"},"name":"Issue
+        Type","operations":[],"allowedValues":[{"self":"https://dev-jira.putit.lan/rest/api/2/issuetype/10100","id":"10100","description":"PUTIT
+        Release","iconUrl":"https://dev-jira.putit.lan/secure/viewavatar?size=xsmall&avatarId=10300&avatarType=issuetype","name":"Release","subtask":false,"avatarId":10300}]},"components":{"required":false,"schema":{"type":"array","items":"component","system":"components"},"name":"Component/s","operations":["add","set","remove"],"allowedValues":[]},"attachment":{"required":false,"schema":{"type":"array","items":"attachment","system":"attachment"},"name":"Attachment","operations":[]},"description":{"required":false,"schema":{"type":"string","system":"description"},"name":"Description","operations":["set"]},"comment":{"required":false,"schema":{"type":"comments-page","system":"comment"},"name":"Comment","operations":["add","edit","remove"]},"assignee":{"required":false,"schema":{"type":"user","system":"assignee"},"name":"Assignee","autoCompleteUrl":"https://dev-jira.putit.lan/rest/api/latest/user/assignable/search?issueKey=PUTR-43&username=","operations":["set"]},"customfield_10100":{"required":false,"schema":{"type":"string","custom":"com.atlassian.jira.plugin.system.customfieldtypes:textfield","customId":10100},"name":"PUTIT
+        release name","operations":["set"]},"customfield_10201":{"required":false,"schema":{"type":"date","custom":"com.atlassian.jira.plugin.system.customfieldtypes:datepicker","customId":10201},"name":"PUTIT
+        start date","operations":["set"]},"customfield_10202":{"required":false,"schema":{"type":"date","custom":"com.atlassian.jira.plugin.system.customfieldtypes:datepicker","customId":10202},"name":"PUTIT
+        end date","operations":["set"]}}}'
+    http_version: 
+  recorded_at: Fri, 11 Aug 2017 10:41:47 GMT
+- request:
+    method: get
+    uri: https://dev-jira.putit.lan/rest/api/2/issue/10208/transitions
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic cHV0aXQ6VHVTU2s=
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 11 Aug 2017 12:53:20 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Arequestid:
+      - 773x19353x1
+      X-Asen:
+      - SEN-L10104601
+      Set-Cookie:
+      - JSESSIONID=91072E7D24B4D3CC147DE94871457B19;path=/;HttpOnly
+      - atlassian.xsrf.token=BYRG-OFU1-8S04-FDML|bf761124fa4cbbb4829ff00e8fd9fe394d8cf280|lin;path=/
+      X-Seraph-Loginreason:
+      - OK
+      X-Asessionid:
+      - 1hx6j3z
+      X-Ausername:
+      - putit
+      Cache-Control:
+      - no-cache, no-store, no-transform
+      X-Content-Type-Options:
+      - nosniff
+    body:
+      encoding: UTF-8
+      string: '{"expand":"transitions","transitions":[{"id":"51","name":"Success","to":{"self":"https://dev-jira.putit.lan/rest/api/2/status/10103","description":"Change
+        has been successfully deployed.","iconUrl":"https://dev-jira.putit.lan/images/icons/statuses/generic.png","name":"Deployed","id":"10103","statusCategory":{"self":"https://dev-jira.putit.lan/rest/api/2/statuscategory/3","id":3,"key":"done","colorName":"green","name":"Done"}}},{"id":"61","name":"Failure","to":{"self":"https://dev-jira.putit.lan/rest/api/2/status/10105","description":"Change
+        deployment has failed.","iconUrl":"https://dev-jira.putit.lan/images/icons/statuses/generic.png","name":"Failed","id":"10105","statusCategory":{"self":"https://dev-jira.putit.lan/rest/api/2/statuscategory/3","id":3,"key":"done","colorName":"green","name":"Done"}}},{"id":"71","name":"Unknown","to":{"self":"https://dev-jira.putit.lan/rest/api/2/status/10106","description":"Change
+        deployment is in Unknown state.","iconUrl":"https://dev-jira.putit.lan/images/icons/statuses/generic.png","name":"Unknown","id":"10106","statusCategory":{"self":"https://dev-jira.putit.lan/rest/api/2/statuscategory/3","id":3,"key":"done","colorName":"green","name":"Done"}}},{"id":"81","name":"Edit","to":{"self":"https://dev-jira.putit.lan/rest/api/2/status/10100","description":"Initial
+        status for Change in PUTIT","iconUrl":"https://dev-jira.putit.lan/images/icons/statuses/generic.png","name":"Working","id":"10100","statusCategory":{"self":"https://dev-jira.putit.lan/rest/api/2/statuscategory/2","id":2,"key":"new","colorName":"blue-gray","name":"To
+        Do"}}}]}'
+    http_version: 
+  recorded_at: Fri, 11 Aug 2017 13:21:06 GMT
+- request:
+    method: post
+    uri: http://dev-jira.putit.lan/rest/api/2/issue/10208/transitions
+    body:
+      encoding: UTF-8
+      string: '{"transition":{"id":51}}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - dev-jira.putit.lan
+      Authorization:
+      - Basic cHV0aXQ6VHVTU2s=
+  response:
+    status:
+      code: 404
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 18 Aug 2017 13:01:00 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Arequestid:
+      - 781x21952x1
+      X-Asen:
+      - SEN-L10104601
+      Set-Cookie:
+      - JSESSIONID=441F4580C3FD99CA7D4984E724BE3418;path=/;HttpOnly
+      - atlassian.xsrf.token=BYRG-OFU1-8S04-FDML|ab5916bcb9fa3339a28b5aca13b0b8917b8bb6b1|lin;path=/
+      X-Seraph-Loginreason:
+      - OK
+      X-Asessionid:
+      - 4pfu6g
+      X-Ausername:
+      - putit
+      Cache-Control:
+      - no-cache, no-store, no-transform
+      X-Content-Type-Options:
+      - nosniff
+    body:
+      encoding: UTF-8
+      string: '{"errorMessages":["Issue Does Not Exist"],"errors":{}}'
+    http_version: 
+  recorded_at: Fri, 18 Aug 2017 13:01:00 GMT
+recorded_with: VCR 3.0.3
