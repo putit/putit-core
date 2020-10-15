@@ -157,9 +157,9 @@ Dir['./helpers/*.rb'].each { |file| require file }
 Dir['./models/wisper/*observer.rb'].each { |file| require file }
 Dir['./models/wisper/global_listener.rb'].each { |file| require file }
 
-Dir["#{Settings.plugins_path}/**/service.rb"].each do |file|
-  require file
-end
+#Dir["#{Settings.plugins_path}/**/service.rb"].each do |file|
+#  require file
+#end
 
 use Rack::Parser
 use RequestStore::Middleware

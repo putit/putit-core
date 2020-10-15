@@ -225,7 +225,7 @@ describe ApplicationController do
     it 'should add Credential to env by name' do
       credential = Credential.first
 
-      put "/application/WEBv1/envs/dev/credential/#{URI.escape(credential.name)}"
+      put "/application/WEBv1/envs/dev/credential/#{URI.encode_www_form_component(credential.name)}"
 
       expect(last_response.status).to eq 202
 
@@ -269,8 +269,8 @@ describe ApplicationController do
       end
 
       it 'should add pipeline to Env' do
-        DeploymentPipeline.templates.create(name: 'P1')
-        DeploymentPipeline.templates.create(name: 'P2')
+        DeploymentPipeline.create(template: true, name: 'P1')
+        DeploymentPipeline.create(template: true, name: 'P2')
 
         payload = [{
           name: 'P1'
@@ -310,8 +310,8 @@ describe ApplicationController do
       end
 
       it 'should reorder pipeline' do
-        DeploymentPipeline.templates.create(name: 'P1')
-        DeploymentPipeline.templates.create(name: 'P2')
+        DeploymentPipeline.create(template: true, name: 'P1')
+        DeploymentPipeline.create(template: true, name: 'P2')
 
         payload = [{
           name: 'P1'
@@ -417,7 +417,7 @@ describe ApplicationController do
     it 'should add Credential to host by name' do
       credential = Credential.first
 
-      put "/application/WEBv1/envs/dev/hosts/testowyhost-1.com/credential/#{URI.escape(credential.name)}"
+      put "/application/WEBv1/envs/dev/hosts/testowyhost-1.com/credential/#{URI.encode_www_form_component(credential.name)}"
 
       expect(last_response.status).to eq 202
 
