@@ -56,7 +56,7 @@ end
 require 'yaml'
 settings_file = File.join(__dir__, 'config/settings.yml')
 if File.file?(settings_file)
-  settings = YAML::load_file(settings_file)
+  settings = YAML.load_file(settings_file)
   Dir["#{settings['plugins_path']}/**/Gemfile"].each do |file|
     instance_eval(File.read(file))
   end

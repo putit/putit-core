@@ -144,6 +144,7 @@ ANONYMIZE_PROPERTIES = Settings.anonymize_properties || DEFAULT_ANONYMIZE_PROPER
 require './common/controllers/putit_controller.rb'
 require './common/controllers/secure_controller.rb'
 require './common/services/putit_service.rb'
+require './plugins/integrations/integration_base.rb'
 Dir['./common/*.rb'].each { |file| require file }
 Dir['./models/ansible/*.rb'].each { |file| require file }
 Dir['./models/paper_trail/*.rb'].each { |file| require file }
@@ -156,10 +157,12 @@ Dir['./mailers/*.rb'].each { |file| require file }
 Dir['./helpers/*.rb'].each { |file| require file }
 Dir['./models/wisper/*observer.rb'].each { |file| require file }
 Dir['./models/wisper/global_listener.rb'].each { |file| require file }
+Dir['./plugins/integrations/**/initialize.rb'].each { |file| require file }
 
-Dir["#{Settings.plugins_path}/**/service.rb"].each do |file|
-  require file
-end
+#Dir["#{Settings.plugins_path}/**/service.rb"].each do |file|
+#  require file
+#end
+
 
 use Rack::Parser
 use RequestStore::Middleware
