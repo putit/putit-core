@@ -3,8 +3,9 @@
 set -ue
 
 get_help() {
-  echo -e "Usage: $0 [--pg_config <PATH> --build-only --db-only] "
+  echo -e "Usage: $0 [--pg_config <PATH> --build-only --db-only --sqlite3-path] "
   echo -e "\t --pg_config      - path to pg_config"
+  echo -e "\t --sqlite3-path   - path to sqlite3 install dir"
   echo -e "\t --build-only     - only install and build gems"
   echo -e "\t --db-only        - only setup database"
   echo -e "\t --config-only    - only setup config files"
@@ -29,7 +30,7 @@ parse_args() {
 		case "${optchar}" in
 			-)
 				case "${OPTARG}" in
-					sqlite3_path)
+					sqlite3-path)
 							val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
 							SQLITE3_PATH=${val}
 							;;
