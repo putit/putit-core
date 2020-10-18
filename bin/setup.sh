@@ -248,7 +248,7 @@ install_bundler_gems() {
   ${BUNDLE} config --local build.pg --with-pg-config=${PG_CONFIG_PATH} >> ${PUTIT_LOG_FILE}
   # case for new sqlite3 which is deliverd by putit team. Should apply for Centos 7 only. 
   if ! [ -z ${SQLITE3_PATH+x} ]; then
-    ${BUNDLE} config --local build.sqlite3 \ 
+    ${BUNDLE} config --local build.sqlite3 \
       --with-opt-include=${SQLITE3_PATH}/ \
       --with-opt-lib=${SQLITE3_PATH}/lib \
       --with-cflags='-O3 -DSQLITE_ENABLE_ICU' \
