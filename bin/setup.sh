@@ -26,61 +26,65 @@ parse_args() {
   optspec=":h-:"
   local regex="\-\-.*"
   while getopts "$optspec" optchar; do
-      case "${optchar}" in
-          -)
-              case "${OPTARG}" in
-                  pg_config)
-                      val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
-                      PG_CONFIG_PATH=${val}
-                      ;;
-                  build-only)
-                      if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then 
-                        PUTIT_BUILD_ONLY=true
-                      else
-                        get_help
-                        exit 1
-                      fi
-                      ;;
-                  db-only)
-                      if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then 
-                        PUTIT_DB_ONLY=true
-                      else
-                        get_help
-                        exit 1
-                      fi
-                      ;;
-		  config-only)
-		      if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then
-	                PUTIT_CONFIG_ONLY=true
-		      else
-			get_help
-			exit 1
-	              fi
-		      ;;
-                  help)
-                      get_help
-                      exit 0
-                      ;;
-                  *) 
-                      echo "${optspec:0:1} ${OPTARG}" 
-                      if [ "$OPTERR" = 1 ]; then
-                          echo -e "Unknown option --${OPTARG}\n" >&2
-                          get_help
-                          exit 1
-                      fi
-                      ;;
-              esac;;
-          h)
-              get_help
-              exit 0
-              ;;
-          *)
-              if [ "$OPTERR" = 1 ] || [ "${optspec:0:1}" = ":" ]; then
-                  echo "Non-option argument: '-${OPTARG}'" >&2
-                  exit 1
-              fi
-              ;;
-      esac
+		case "${optchar}" in
+			-)
+				case "${OPTARG}" in
+					sqlite3_path)
+							val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+							SQLITE3_PATH=${val}
+							;;
+					pg_config)
+							val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+							PG_CONFIG_PATH=${val}
+							;;
+					build-only)
+							if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then 
+								PUTIT_BUILD_ONLY=true
+							else
+								get_help
+								exit 1
+							fi
+							;;
+					db-only)
+							if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then 
+								PUTIT_DB_ONLY=true
+							else
+								get_help
+								exit 1
+							fi
+							;;
+					config-only)
+							if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then
+								PUTIT_CONFIG_ONLY=true
+							else
+								get_help
+								exit 1
+							fi
+							;;
+					help)
+							get_help
+							exit 0
+							;;
+					*) 
+							echo "${optspec:0:1} ${OPTARG}" 
+							if [ "$OPTERR" = 1 ]; then
+									echo -e "Unknown option --${OPTARG}\n" >&2
+									get_help
+									exit 1
+							fi
+							;;
+				esac;;
+			h)
+				get_help
+				exit 0
+				;;
+			*)
+				if [ "$OPTERR" = 1 ] || [ "${optspec:0:1}" = ":" ]; then
+						echo "Non-option argument: '-${OPTARG}'" >&2
+						exit 1
+				fi
+				;;
+		esac
   done
 }
 
@@ -241,6 +245,15 @@ install_bundler_gems() {
   ${BUNDLE} config --local path lib/gems >> ${PUTIT_LOG_FILE}
   ${BUNDLE} config --local without development >> ${PUTIT_LOG_FILE}
   ${BUNDLE} config --local build.pg --with-pg-config=${PG_CONFIG_PATH} >> ${PUTIT_LOG_FILE}
+  # case for new sqlite3 which is deliverd by putit team. Should apply for Centos 7 only. 
+  if ! [ -z ${SQLITE3_PATH+x} ]; then
+    ${BUNDLE} config --local build.sqlite3 \ 
+      --with-opt-include=${SQLITE3_PATH}/\
+      --with-opt-lib=${SQLITE3_PATH}/.libs \
+      --with-cflags='-O3 -DSQLITE_ENABLE_ICU' \
+      --with-cppflags='icu-config --cppflags' \
+      --with-ldflags='icu-config --ldflags' >> ${PUTIT_LOG_FILE}
+  fi
 
   if [ -f "${PUTIT_APP_DIR}/Gemfile" ]; then
     log "INFO" "Installing gems..."
