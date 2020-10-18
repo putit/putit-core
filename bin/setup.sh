@@ -138,7 +138,7 @@ set_vars() {
   APP_USER=$(whoami)
   APP_GROUP="${APP_USER}"
   export RACK_ENV="production"
-  export BUNDLER_VERSION="1.16.3"
+  export BUNDLER_VERSION="2.1.4"
 
   local script_dir=$(dirname $(abspath $0))
   export PUTIT_APP_DIR="${script_dir%/bin}"
