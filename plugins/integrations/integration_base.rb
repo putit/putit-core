@@ -20,8 +20,7 @@ module Putit
       end
 
       def self.call(env)
-        req = Rack::Request.new(env)
-        [200, { 'Content-Type' => 'text/plain' }, [@handler.call(env['rack.input'].read)] ]
+        [200, { 'Content-Type' => 'text/plain' }, [@handler.call(env['rack.input'].read)]]
       end
     end
   end

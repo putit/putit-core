@@ -132,6 +132,10 @@ module RSpecMixin
         run OrderController
       end
 
+      Putit::Integration::IntegrationBase.descendants.each do |plugin|
+        map("/handlers/#{plugin.endpoint}") { run plugin }
+      end
+
       map '/' do
         run ReleaseController
       end
