@@ -158,11 +158,11 @@ Dir['./helpers/*.rb'].each { |file| require file }
 Dir['./models/wisper/*observer.rb'].each { |file| require file }
 Dir['./models/wisper/global_listener.rb'].each { |file| require file }
 Dir['./plugins/integrations/**/initialize.rb'].each { |file| require file }
+Dir['./plugins/integrations/**/models/*.rb'].each { |file| require file }
 
-#Dir["#{Settings.plugins_path}/**/service.rb"].each do |file|
+# Dir["#{Settings.plugins_path}/**/service.rb"].each do |file|
 #  require file
-#end
-
+# end
 
 use Rack::Parser
 use RequestStore::Middleware

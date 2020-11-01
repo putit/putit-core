@@ -1,0 +1,79 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://putit.atlassian.net/rest/api/3/search?jql=Project%20=%2010002%20and%20fixVersion%20=%201.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - putit.atlassian.net
+      Authorization:
+      - Basic bWF0bWF3QGdtYWlsLmNvbTpsNmE4dFRwVExLT3pUOGJlYmh1dzQ4REQ=
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - AtlassianProxy/1.15.8.1
+      Vary:
+      - Accept-Encoding
+      Cache-Control:
+      - no-cache, no-store, no-transform
+      Content-Type:
+      - application/json;charset=UTF-8
+      Strict-Transport-Security:
+      - max-age=315360000; includeSubDomains; preload
+      Date:
+      - Wed, 28 Oct 2020 21:03:31 GMT
+      Atl-Traceid:
+      - 8043fa6c5b3c32c0
+      X-Arequestid:
+      - bf200739-e6c6-4678-abde-26541ad318e5
+      X-Aaccountid:
+      - 5f576741dd68350075253937
+      X-Xss-Protection:
+      - 1; mode=block
+      Transfer-Encoding:
+      - chunked
+      Timing-Allow-Origin:
+      - "*"
+      X-Envoy-Upstream-Service-Time:
+      - '568'
+      X-Content-Type-Options:
+      - nosniff
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - atlassian.xsrf.token=0e6477f4-8610-4423-8c15-5433a3c6a8ee_ee9802bcc3299707ef00b4d5989d22a95b20d431_lin;
+        Path=/; Secure
+      Expect-Ct:
+      - report-uri="https://web-security-reports.services.atlassian.com/expect-ct-report/global-proxy",
+        enforce, max-age=86400
+    body:
+      encoding: ASCII-8BIT
+      string: '{"expand":"schema,names","startAt":0,"maxResults":50,"total":2,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,renderedFields","id":"10001","self":"https://putit.atlassian.net/rest/api/3/issue/10001","key":"SC1-2","fields":{"statuscategorychangedate":"2020-09-09T00:31:27.370+0200","issuetype":{"self":"https://putit.atlassian.net/rest/api/3/issuetype/10004","id":"10004","description":"Functionality
+        or a feature expressed as a user goal.","iconUrl":"https://putit.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype","name":"Story","subtask":false,"avatarId":10315},"timespent":null,"project":{"self":"https://putit.atlassian.net/rest/api/3/project/10002","id":"10002","key":"SC1","name":"Scrum-Clasic-1","projectTypeKey":"software","simplified":false,"avatarUrls":{"48x48":"https://putit.atlassian.net/secure/projectavatar?pid=10002&avatarId=10409","24x24":"https://putit.atlassian.net/secure/projectavatar?size=small&s=small&pid=10002&avatarId=10409","16x16":"https://putit.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10002&avatarId=10409","32x32":"https://putit.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10002&avatarId=10409"}},"fixVersions":[{"self":"https://putit.atlassian.net/rest/api/3/version/10000","id":"10000","description":"","name":"1.0","archived":false,"released":true,"releaseDate":"2020-10-14"}],"aggregatetimespent":null,"resolution":{"self":"https://putit.atlassian.net/rest/api/3/resolution/10000","id":"10000","description":"Work
+        has been completed on this issue.","name":"Done"},"customfield_10028":null,"resolutiondate":"2020-09-09T00:31:27.364+0200","workratio":-1,"watches":{"self":"https://putit.atlassian.net/rest/api/3/issue/SC1-2/watchers","watchCount":1,"isWatching":false},"lastViewed":"2020-10-14T21:46:11.390+0200","created":"2020-09-09T00:31:07.394+0200","customfield_10020":[{"id":1,"name":"SC1
+        Sprint 1","state":"active","boardId":3,"goal":"","startDate":"2020-09-08T22:31:23.920Z","endDate":"2020-09-15T22:31:00.000Z"}],"customfield_10021":null,"customfield_10022":null,"customfield_10023":null,"priority":{"self":"https://putit.atlassian.net/rest/api/3/priority/3","iconUrl":"https://putit.atlassian.net/images/icons/priorities/medium.svg","name":"Medium","id":"3"},"customfield_10024":null,"customfield_10025":"10006_*:*_1_*:*_19991_*|*_10005_*:*_1_*:*_0","labels":[],"customfield_10016":null,"customfield_10017":null,"customfield_10018":{"hasEpicLinkFieldDependency":false,"showField":false,"nonEditableReason":{"reason":"PLUGIN_LICENSE_ERROR","message":"The
+        Parent Link is only available to Jira Premium users."}},"customfield_10019":"0|hzzzzr:","aggregatetimeoriginalestimate":null,"timeestimate":null,"versions":[],"issuelinks":[],"assignee":null,"updated":"2020-10-14T21:42:38.644+0200","status":{"self":"https://putit.atlassian.net/rest/api/3/status/10005","description":"","iconUrl":"https://putit.atlassian.net/","name":"Done","id":"10005","statusCategory":{"self":"https://putit.atlassian.net/rest/api/3/statuscategory/3","id":3,"key":"done","colorName":"green","name":"Done"}},"components":[],"timeoriginalestimate":null,"description":null,"customfield_10010":null,"customfield_10014":null,"customfield_10015":null,"customfield_10005":null,"customfield_10006":null,"security":null,"customfield_10007":null,"customfield_10008":null,"aggregatetimeestimate":null,"customfield_10009":null,"summary":"I-2
+        - fixes 1.0","creator":{"self":"https://putit.atlassian.net/rest/api/3/user?accountId=5f576344d2c77e0075a1905b","accountId":"5f576344d2c77e0075a1905b","avatarUrls":{"48x48":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","24x24":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","16x16":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","32x32":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png"},"displayName":"Piotr
+        Skowron","active":true,"timeZone":"Europe/Warsaw","accountType":"atlassian"},"subtasks":[],"reporter":{"self":"https://putit.atlassian.net/rest/api/3/user?accountId=5f576344d2c77e0075a1905b","accountId":"5f576344d2c77e0075a1905b","avatarUrls":{"48x48":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","24x24":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","16x16":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","32x32":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png"},"displayName":"Piotr
+        Skowron","active":true,"timeZone":"Europe/Warsaw","accountType":"atlassian"},"aggregateprogress":{"progress":0,"total":0},"customfield_10000":"{}","customfield_10001":null,"customfield_10002":null,"customfield_10003":null,"customfield_10004":null,"environment":null,"duedate":null,"progress":{"progress":0,"total":0},"votes":{"self":"https://putit.atlassian.net/rest/api/3/issue/SC1-2/votes","votes":0,"hasVoted":false}}},{"expand":"operations,versionedRepresentations,editmeta,changelog,renderedFields","id":"10000","self":"https://putit.atlassian.net/rest/api/3/issue/10000","key":"SC1-1","fields":{"statuscategorychangedate":"2020-09-09T00:31:28.468+0200","issuetype":{"self":"https://putit.atlassian.net/rest/api/3/issuetype/10004","id":"10004","description":"Functionality
+        or a feature expressed as a user goal.","iconUrl":"https://putit.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype","name":"Story","subtask":false,"avatarId":10315},"timespent":null,"project":{"self":"https://putit.atlassian.net/rest/api/3/project/10002","id":"10002","key":"SC1","name":"Scrum-Clasic-1","projectTypeKey":"software","simplified":false,"avatarUrls":{"48x48":"https://putit.atlassian.net/secure/projectavatar?pid=10002&avatarId=10409","24x24":"https://putit.atlassian.net/secure/projectavatar?size=small&s=small&pid=10002&avatarId=10409","16x16":"https://putit.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10002&avatarId=10409","32x32":"https://putit.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10002&avatarId=10409"}},"fixVersions":[{"self":"https://putit.atlassian.net/rest/api/3/version/10000","id":"10000","description":"","name":"1.0","archived":false,"released":true,"releaseDate":"2020-10-14"}],"aggregatetimespent":null,"resolution":{"self":"https://putit.atlassian.net/rest/api/3/resolution/10000","id":"10000","description":"Work
+        has been completed on this issue.","name":"Done"},"customfield_10028":null,"resolutiondate":"2020-09-09T00:31:28.464+0200","workratio":-1,"lastViewed":"2020-10-14T21:42:13.015+0200","watches":{"self":"https://putit.atlassian.net/rest/api/3/issue/SC1-1/watchers","watchCount":1,"isWatching":false},"created":"2020-09-09T00:31:04.882+0200","customfield_10020":[{"id":1,"name":"SC1
+        Sprint 1","state":"active","boardId":3,"goal":"","startDate":"2020-09-08T22:31:23.920Z","endDate":"2020-09-15T22:31:00.000Z"}],"customfield_10021":null,"customfield_10022":null,"customfield_10023":null,"priority":{"self":"https://putit.atlassian.net/rest/api/3/priority/3","iconUrl":"https://putit.atlassian.net/images/icons/priorities/medium.svg","name":"Medium","id":"3"},"customfield_10024":null,"customfield_10025":"10006_*:*_1_*:*_23602_*|*_10005_*:*_1_*:*_0","labels":[],"customfield_10016":null,"customfield_10017":null,"customfield_10018":{"hasEpicLinkFieldDependency":false,"showField":false,"nonEditableReason":{"reason":"PLUGIN_LICENSE_ERROR","message":"The
+        Parent Link is only available to Jira Premium users."}},"customfield_10019":"0|hzzzzz:","aggregatetimeoriginalestimate":null,"timeestimate":null,"versions":[],"issuelinks":[],"assignee":null,"updated":"2020-10-14T21:42:21.447+0200","status":{"self":"https://putit.atlassian.net/rest/api/3/status/10005","description":"","iconUrl":"https://putit.atlassian.net/","name":"Done","id":"10005","statusCategory":{"self":"https://putit.atlassian.net/rest/api/3/statuscategory/3","id":3,"key":"done","colorName":"green","name":"Done"}},"components":[],"timeoriginalestimate":null,"description":null,"customfield_10010":null,"customfield_10014":null,"customfield_10015":null,"customfield_10005":null,"customfield_10006":null,"security":null,"customfield_10007":null,"customfield_10008":null,"customfield_10009":null,"aggregatetimeestimate":null,"summary":"I-1
+        - fixes 1.0","creator":{"self":"https://putit.atlassian.net/rest/api/3/user?accountId=5f576344d2c77e0075a1905b","accountId":"5f576344d2c77e0075a1905b","avatarUrls":{"48x48":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","24x24":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","16x16":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","32x32":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png"},"displayName":"Piotr
+        Skowron","active":true,"timeZone":"Europe/Warsaw","accountType":"atlassian"},"subtasks":[],"reporter":{"self":"https://putit.atlassian.net/rest/api/3/user?accountId=5f576344d2c77e0075a1905b","accountId":"5f576344d2c77e0075a1905b","avatarUrls":{"48x48":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","24x24":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","16x16":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png","32x32":"https://secure.gravatar.com/avatar/a6cef88c75b87abd746cbad84d913404?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FPS-0.png"},"displayName":"Piotr
+        Skowron","active":true,"timeZone":"Europe/Warsaw","accountType":"atlassian"},"aggregateprogress":{"progress":0,"total":0},"customfield_10000":"{}","customfield_10001":null,"customfield_10002":null,"customfield_10003":null,"customfield_10004":null,"environment":null,"duedate":null,"progress":{"progress":0,"total":0},"votes":{"self":"https://putit.atlassian.net/rest/api/3/issue/SC1-1/votes","votes":0,"hasVoted":false}}}]}'
+  recorded_at: Wed, 28 Oct 2020 21:03:32 GMT
+recorded_with: VCR 6.0.0
