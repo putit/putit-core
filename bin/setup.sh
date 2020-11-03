@@ -232,10 +232,10 @@ set_config() {
 
 # check if pg_config is installed - required
 check_pg_config() {
-  if type pg_config >/dev/null 2>&1 ; then
-    export PG_CONFIG_PATH=$(type pg_config | cut -d' ' -f3)
-  elif [[ ! -z ${PG_CONFIG_PATH+x} && -f ${PG_CONFIG_PATH} ]] ; then
+  if [[ ! -z ${PG_CONFIG_PATH+x} && -f ${PG_CONFIG_PATH} ]] ; then
     return 0
+  elif type pg_config >/dev/null 2>&1 ; then
+    export PG_CONFIG_PATH=$(type pg_config | cut -d' ' -f3)
   else
     echo >&2 "[ERROR] No PostgreSQL binaries found. Please install postgresql-devel package. Please try to specify it as argument .$0 --pg_config <PATH>"
     exit 1
