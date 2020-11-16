@@ -129,9 +129,9 @@ log() {
 
 check_ruby() {
   log "INFO" "Checking if Ruby is installed..."
-  local is_ruby=$(ruby -v | grep -Ec 'ruby 2.4|ruby 2.5|ruby 2.6|ruby 2.7|ruby 2.8')
+  local is_ruby=$(ruby -v | grep -Ec 'ruby 2.6|ruby 2.7|ruby 2.8|ruby 2.9')
   if [ ${is_ruby} -ne 1 ]; then
-    log "ERROR" "Please install Ruby 2.4.0 or greater."
+    log "ERROR" "Please install Ruby 2.6.0 or greater."
     exit 1
   else
     log "INFO" "Found: $(ruby -v)"
