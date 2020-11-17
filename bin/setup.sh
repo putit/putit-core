@@ -230,29 +230,18 @@ set_config() {
   fi
 }
 
-# check if pg_config is installed - required
-check_pg_config() {
-  if [[ ! -z ${PG_CONFIG_PATH+x} && -f ${PG_CONFIG_PATH} ]] ; then
-    return 0
-  elif type pg_config >/dev/null 2>&1 ; then
-    export PG_CONFIG_PATH=$(type pg_config | cut -d' ' -f3)
-  else
-    echo >&2 "[ERROR] No PostgreSQL binaries found. Please install postgresql-devel package. Please try to specify it as argument .$0 --pg_config <PATH>"
-    exit 1
-  fi
-}
-
 install_bundler_gems() {
   ${BUNDLE} config --local path lib/gems >> ${PUTIT_LOG_FILE}
   ${BUNDLE} config --local without development >> ${PUTIT_LOG_FILE}
-  ${BUNDLE} config --local build.pg --with-pg-config=${PG_CONFIG_PATH} >> ${PUTIT_LOG_FILE}
-  # case for new sqlite3 which is deliverd by putit team. Should apply for Centos 7 only. 
+  
   if ! [ -z ${SQLITE3_PATH+x} ]; then
-    log "INFO" "Adding bundle config entry for slite3 installed under: $SQLITE3_PATH"
-    ${BUNDLE} config --local build.sqlite3 \
-      --with-opt-include=${SQLITE3_PATH}/ \
-      --with-opt-lib=${SQLITE3_PATH}/lib \
-      --with-cflags='-O3 -DSQLITE_ENABLE_ICU' >> ${PUTIT_LOG_FILE}
+    log "INFO" "Using SQLite3 libraries from ${SQLITE3_PATH}..."
+    ${BUNDLE} config --local build.sqlite3 --with-opt-include=${SQLITE3_PATH}/include --with-opt-lib=${SQLITE3_PATH}/lib --with-cflags='-O2 -DSQLITE_ENABLE_ICU' >> ${PUTIT_LOG_FILE}
+  fi
+  
+  if ! [ -z ${SQLITE3_PATH+x} ]; then
+    log "INFO" "Using PostgreSQL binaries from $(echo $PG_CONFIG_PATH | sed s,/bin/pg_config,,g)..."
+    ${BUNDLE} config --local build.pg --with-pg-config=${PG_CONFIG_PATH} >> ${PUTIT_LOG_FILE}
   fi
 
   if [ -f "${PUTIT_APP_DIR}/Gemfile" ]; then
