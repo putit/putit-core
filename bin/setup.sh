@@ -312,8 +312,8 @@ setup_db() {
 # main body
 
 parse_args $@
-set_vars
 check_ruby
+set_vars
 
 if [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
