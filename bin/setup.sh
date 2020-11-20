@@ -247,7 +247,7 @@ install_bundler_gems() {
     ${BUNDLE} config --local build.sqlite3 --with-opt-include=${SQLITE3_PATH}/include --with-opt-lib=${SQLITE3_PATH}/lib --with-cflags='-O2 -DSQLITE_ENABLE_ICU' >> ${PUTIT_LOG_FILE}
   fi
 
-  if ! [ -z ${SQLITE3_PATH+x} ]; then
+  if ! [ -z ${PG_CONFIG_PATH+x} ]; then
     log "INFO" "Using PostgreSQL binaries from $(echo $PG_CONFIG_PATH | sed s,/bin/pg_config,,g)..."
     ${BUNDLE} config --local build.pg --with-pg-config=${PG_CONFIG_PATH} >> ${PUTIT_LOG_FILE}
   fi
@@ -324,7 +324,6 @@ set_vars
 
 if [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  check_pg_config
   install_bundler
   install_bundler_gems
   log "INFO" "Setting up configuration files and start script..."
@@ -332,7 +331,6 @@ if [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ] && [ ! -z ${PUT
   setup_db
 elif [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  check_pg_config
   install_bundler
   install_bundler_gems
   log "INFO" "Skipping configuration files and start script setup..."
@@ -344,7 +342,6 @@ elif [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
   setup_db
 elif [ ! -z ${PUTIT_CONFIG_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  check_pg_config
   install_bundler
   install_bundler_gems
   log "INFO" "Setting up configuration files and start script..."
@@ -361,14 +358,12 @@ elif [ ! -z ${PUTIT_DB_ONLY+x} ]; then
   setup_db
 elif [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  check_pg_config
   install_bundler
   install_bundler_gems
   log "INFO" "Skipping configuration files and start script setup..."
   log "INFO" "Skipping database setup..."
 else
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  check_pg_config
   install_bundler
   install_bundler_gems
   log "INFO" "Setting up configuration files and start script..."
