@@ -3,7 +3,7 @@
 set -ue
 
 get_help() {
-  echo -e "Usage: $0 [--pgconfig-path <PATH> | --sqlite3-path | --build-only | --db-only | --config-only]"
+  echo -e "Usage: $0 [--pgconfig-path <PATH> | --sqlite3-path <PATH> | --build-only | --db-only | --config-only]"
   echo -e "\t --pgconfig-path  - path to pg_config binary"
   echo -e "\t --sqlite3-path   - path to sqlite3 install directory"
   echo -e "\t --build-only     - only install and build dependencies"
@@ -149,10 +149,19 @@ set_vars() {
   export PUTIT_APP_DIR="${script_dir%/bin}"
   export PUTIT_LOG_FILE="${PUTIT_APP_DIR}/log/build.log"
 
+  log "INFO" "Checking if Ruby is installed..."
+  local is_ruby=$(ruby -v 2>/dev/null | grep -Ec 'ruby 2.6|ruby 2.7|ruby 2.8|ruby 2.9')
+  if [ ${is_ruby} -ne 1 ]; then
+    log "ERROR" "Required version of Ruby not found. Please install Ruby 2.6.0 or greater."
+    exit 1
+  else
+    log "INFO" "Found: $(ruby -v)"
+  fi
+
   if type gem >/dev/null 2>&1 ; then
     export PUTIT_GEM_PATH=$(type gem | cut -d' ' -f3)
   else
-    echo >&2 "[ERROR] Required gem binaries not found. Please install gem binary."
+    log "ERROR" "Rubygems package not found in your Ruby distribution. Please install rubygems."
     exit 1
   fi
 
@@ -168,7 +177,6 @@ set_vars() {
   log "DEBUG" "Set \$CONFIG_DIR: $CONFIG_DIR"
   log "DEBUG" "Set \$BUNDLE: $BUNDLE"
   log "DEBUG" "Set \$RUBY: $(which ruby)"
-
 }
 
 set_config() {
@@ -312,7 +320,6 @@ setup_db() {
 # main body
 
 parse_args $@
-check_ruby
 set_vars
 
 if [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
