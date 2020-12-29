@@ -24,8 +24,8 @@ class DeploymentPipeline < ActiveRecord::Base
 
   validates_uniqueness_of :name, if: :template?
 
-  default_scope { order(position: :asc) }
-  scope :templates, -> { where(template: true) }
+  default_scope { self.order(position: :asc) }
+  scope :templates, -> { self.where(template: true) }
 
   has_many :deployment_pipeline_steps
   has_many :steps, through: :deployment_pipeline_steps, dependent: :destroy

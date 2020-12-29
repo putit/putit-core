@@ -125,7 +125,8 @@ class RunPlaybookService < PutitService
       'PUTIT_APPLICATION' => avw.application.name,
       'PUTIT_APPLICATION_VERSION' => avw.version,
       'PUTIT_ENV' => env.name,
-      'PUTIT_RESULT_URL' => "#{Settings.putit_core_url}/deployment/#{URI.escape(avw.application.name)}/#{env.name}/#{result.id}"
+      'PUTIT_RESULT_URL' => "#{Settings.putit_core_url}/deployment/#{URI.escape(avw.application.name)}/#{env.name}/#{result.id}",
+      'PATH' => ENV['PATH']
     }
     if env.aws_tags
       begin
