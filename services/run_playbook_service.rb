@@ -39,7 +39,6 @@ class RunPlaybookService < PutitService
 
             args = set_ansible_playbook_args(env, avw, deployment)
             env_variables = set_env_variables(env, avw, result)
-            logger.debug("Env variables: \"#{env_variables.inspect}\"")
 
             begin
               exit_status = -128
@@ -118,7 +117,6 @@ class RunPlaybookService < PutitService
     run_args.push(deployment)
     logger.debug("Run args has been set to: #{run_args.inspect} for env: #{env.name} and #{avw.application.name}")
     run_args
-    run_args = ['echo $PATH']
   end
 
   # set ENV vars which will be used during the playbok run
