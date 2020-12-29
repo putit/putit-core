@@ -322,6 +322,8 @@ setup_db() {
 parse_args $@
 set_vars
 
+pushd ${PUTIT_APP_DIR} >/dev/null 2>&1
+
 if [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
   install_bundler
@@ -372,3 +374,5 @@ else
 fi
 
 log "INFO" "Setup done."
+
+popd >/dev/null 2>&1
