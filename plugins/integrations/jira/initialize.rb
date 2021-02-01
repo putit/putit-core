@@ -1,9 +1,12 @@
 require 'net/http'
 require 'uri'
 
+Config.load_and_set_settings(File.join(File.dirname(__FILE__), 'settings.yml'))
+
 module PutitJira
   # Base class for JIRA integration for putit
   class PutitJiraIntegration < Putit::Integration::IntegrationBase
+    p 123456, config
     listen_for_webhook_on_url 'jira'
 
     on_webhook do |data|
