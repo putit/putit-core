@@ -22,8 +22,8 @@ class Env < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name, scope: :application_id
-  validates_format_of :name, with: /[\w\.-]+/
-  validates_format_of :aws_tags, with: %r{\A[a-zA-Z0-9!&+-\=\._:/@]+$?\Z}, allow_nil: :true, on: %i[create update]
+  validates_format_of :name, with: /[\w.-]+/
+  validates_format_of :aws_tags, with: %r{\A[a-zA-Z0-9!&+-=._:/@]+$?\Z}, allow_nil: :true, on: %i[create update]
 
   belongs_to :application
   has_many :hosts, dependent: :destroy
@@ -41,7 +41,7 @@ class Env < ActiveRecord::Base
   has_many :pipelines, -> { order(:position) }, class_name: 'DeploymentPipeline', dependent: :destroy
 
   before_destroy do
-    PROPERTIES_STORE.delete(properties_key, {})
+    PROPERTIES_STORE.delete(properties_key)
   end
 
   def serializable_hash(_options = {})
@@ -71,14 +71,18 @@ class Env < ActiveRecord::Base
   def orders_by_status
     avw = ApplicationWithVersion.where(application_id: application.id)
     roavw = ReleaseOrderApplicationWithVersion.where(application_with_version_id: avw.ids, release_order_id: @ro.ids)
-    roavw.joins(:release_order_application_with_version_envs).select { |r| r.release_order_application_with_version_envs.exists?(env_id: id) }
+    roavw.joins(:release_order_application_with_version_envs).select do |r|
+      r.release_order_application_with_version_envs.exists?(env_id: id)
+    end
   end
 
   # get all release orders application with version envs
   def all_orders
     avw = ApplicationWithVersion.where(application_id: application.id)
     roavw = ReleaseOrderApplicationWithVersion.where(application_with_version_id: avw.ids)
-    roavw.joins(:release_order_application_with_version_envs).select { |r| r.release_order_application_with_version_envs.exists?(env_id: id) }
+    roavw.joins(:release_order_application_with_version_envs).select do |r|
+      r.release_order_application_with_version_envs.exists?(env_id: id)
+    end
   end
 
   # get upcoming release orders application with version envs
@@ -86,7 +90,9 @@ class Env < ActiveRecord::Base
     avw = ApplicationWithVersion.where(application_id: application.id)
     ro = ReleaseOrder.upcoming
     roavw = ReleaseOrderApplicationWithVersion.where(application_with_version_id: avw.ids, release_order_id: ro.ids)
-    roavw.joins(:release_order_application_with_version_envs).select { |r| r.release_order_application_with_version_envs.exists?(env_id: id) }
+    roavw.joins(:release_order_application_with_version_envs).select do |r|
+      r.release_order_application_with_version_envs.exists?(env_id: id)
+    end
   end
 
   def is_deletable?

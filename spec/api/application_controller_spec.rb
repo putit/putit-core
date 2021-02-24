@@ -225,7 +225,7 @@ describe ApplicationController do
     it 'should add Credential to env by name' do
       credential = Credential.first
 
-      put "/application/WEBv1/envs/dev/credential/#{URI.escape(credential.name)}"
+      put "/application/WEBv1/envs/dev/credential/#{URI.encode_www_form_component(credential.name)}"
 
       expect(last_response.status).to eq 202
 
@@ -323,7 +323,7 @@ describe ApplicationController do
         put '/application/WEBv1/envs/dev/pipelines/P2/order/move_to_top'
 
         expect(last_response.status).to eq 202
-        
+
         a = Application.find_by_name('WEBv1')
         e = a.envs.find_by_name('dev')
 
@@ -417,7 +417,7 @@ describe ApplicationController do
     it 'should add Credential to host by name' do
       credential = Credential.first
 
-      put "/application/WEBv1/envs/dev/hosts/testowyhost-1.com/credential/#{URI.escape(credential.name)}"
+      put "/application/WEBv1/envs/dev/hosts/testowyhost-1.com/credential/#{URI.encode_www_form_component(credential.name)}"
 
       expect(last_response.status).to eq 202
 

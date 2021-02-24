@@ -23,10 +23,10 @@ class Release < ActiveRecord::Base
   serialize :metadata, JSON
 
   validates_presence_of :name
-  validates_format_of :name, with: /\A[\w\. -]+\z/
+  validates_format_of :name, with: /\A[\w. -]+\z/
 
   has_many :release_orders, dependent: :destroy
-  has_many :subreleases, source: :subrelease
+  has_many :subreleases
   has_many :dependent_releases, through: :subreleases, source: :subrelease
 
   enum status: %i[open closed]
@@ -68,8 +68,6 @@ class Release < ActiveRecord::Base
 
   def validate_status(status)
     enums = Release.statuses.map(&:first)
-    unless enums.include? status
-      raise PutitExceptions::EnumError, "Invalid status: #{status}, valids are: \"#{enums}\""
-    end
+    raise PutitExceptions::EnumError, "Invalid status: #{status}, valids are: \"#{enums}\"" unless enums.include? status
   end
 end

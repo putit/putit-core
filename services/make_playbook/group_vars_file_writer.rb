@@ -48,7 +48,8 @@ class GroupVarsFileWiter < PutitService
           f.puts(data.to_yaml)
         end
       rescue StandardError => e
-        raise PutitExceptions::MakePlaybookServiceError, "Unable to write artifacts.yml file under the path: #{artifacts_yml} due to error: #{e.message}"
+        raise PutitExceptions::MakePlaybookServiceError,
+              "Unable to write artifacts.yml file under the path: #{artifacts_yml} due to error: #{e.message}"
       end
       logger.debug('Saved file with artifacts information: artifacts_yml')
     end
@@ -58,7 +59,7 @@ class GroupVarsFileWiter < PutitService
     roavw = @release_order.release_order_application_with_versions.find_by_application_with_version_id(application_with_version.id)
     roavw.envs.each do |env|
       group_vars_dir = File.join(@base_dir, application_with_version.dir_name, env.name, 'group_vars')
-      properties = PROPERTIES_STORE.load(env.properties_key)
+      properties = PROPERTIES_STORE[env.properties_key]
       next if properties.nil?
 
       group_dir_all = File.join(group_vars_dir, 'all')
@@ -68,7 +69,8 @@ class GroupVarsFileWiter < PutitService
           f.puts(properties.to_yaml)
         end
       rescue StandardError => e
-        raise PutitExceptions::MakePlaybookServiceError, "Unable to write application properties file under the path: \"#{group_dir_all}/properties.yml\" due to error: #{e.message}"
+        raise PutitExceptions::MakePlaybookServiceError,
+              "Unable to write application properties file under the path: \"#{group_dir_all}/properties.yml\" due to error: #{e.message}"
       end
       logger.debug("Saved file with application-env properties under: #{group_dir_all}")
     end
@@ -90,7 +92,8 @@ class GroupVarsFileWiter < PutitService
         data = {
           'ansible_ssh_user' => env.credential.depuser.username.to_s,
           'putit_ansible_ssh_deploy_user' => env.credential.depuser.username.to_s,
-          'putit_ansible_ssh_deploy_public_key_file' => "./keys/#{env.credential.get_env_public_key_filename(env, application)}",
+          'putit_ansible_ssh_deploy_public_key_file' => "./keys/#{env.credential.get_env_public_key_filename(env,
+                                                                                                             application)}",
           'ansible_ssh_private_key_file' => "./keys/#{env.credential.get_env_private_key_filename(env, application)}"
         }
       end
@@ -100,7 +103,8 @@ class GroupVarsFileWiter < PutitService
           f.write(YAML.dump(data))
         end
       rescue StandardError => e
-        raise PutitExceptions::MakePlaybookServiceError, "Unable to wrtie group_vars file at: #{credential_vars} due to error: #{e.message}"
+        raise PutitExceptions::MakePlaybookServiceError,
+              "Unable to wrtie group_vars file at: #{credential_vars} due to error: #{e.message}"
       end
       logger.debug("Saved credential_vars file: #{credential_vars} for #{env.name}-#{application.dir_name}")
 
@@ -121,8 +125,10 @@ class GroupVarsFileWiter < PutitService
       data = {
         'ansible_ssh_user' => host.credential.depuser.username.to_s,
         'putit_ansible_ssh_deploy_user' => host.credential.depuser.username.to_s,
-        'putit_ansible_ssh_deploy_public_key_file' => "./keys/#{host.credential.get_host_public_key_filename(env, host, application)}",
-        'ansible_ssh_private_key_file' => "./keys/#{host.credential.get_host_private_key_filename(env, host, application)}"
+        'putit_ansible_ssh_deploy_public_key_file' => "./keys/#{host.credential.get_host_public_key_filename(env,
+                                                                                                             host, application)}",
+        'ansible_ssh_private_key_file' => "./keys/#{host.credential.get_host_private_key_filename(env, host,
+                                                                                                  application)}"
       }
 
       begin
@@ -131,7 +137,8 @@ class GroupVarsFileWiter < PutitService
           f.write(YAML.dump(data))
         end
       rescue StandardError => e
-        raise PutitExceptions::MakePlaybookServiceError, "Unable to wrtie host_vars file at: #{credential_vars} due to error: #{e.message}"
+        raise PutitExceptions::MakePlaybookServiceError,
+              "Unable to wrtie host_vars file at: #{credential_vars} due to error: #{e.message}"
       end
       logger.debug("Saved credetial_vars file for host: #{host.inspect} into file: #{credential_vars}")
     end

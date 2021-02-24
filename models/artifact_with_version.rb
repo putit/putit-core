@@ -16,7 +16,7 @@ class ArtifactWithVersion < ActiveRecord::Base
   attr_accessor :properties
 
   before_destroy do
-    PROPERTIES_STORE.delete(properties_key, {})
+    PROPERTIES_STORE.delete(properties_key)
   end
 
   def properties_key
