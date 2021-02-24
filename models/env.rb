@@ -40,10 +40,6 @@ class Env < ActiveRecord::Base
 
   has_many :pipelines, -> { order(:position) }, class_name: 'DeploymentPipeline', dependent: :destroy
 
-  before_destroy do
-    PROPERTIES_STORE.delete(properties_key)
-  end
-
   def serializable_hash(_options = {})
     { id: id,
       name: name,

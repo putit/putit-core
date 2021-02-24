@@ -15,10 +15,6 @@ class ArtifactWithVersion < ActiveRecord::Base
 
   attr_accessor :properties
 
-  before_destroy do
-    PROPERTIES_STORE.delete(properties_key)
-  end
-
   def properties_key
     key = "#{artifact.name}/#{version.version}"
     "/artifact/#{artifact.artifact_type}/#{key}/properties"

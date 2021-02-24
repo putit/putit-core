@@ -1,22 +1,17 @@
 class ArtifactController < SecureController
-
   before '/*' do
     pass if params['splat'][0].blank?
     name = params['splat'][0].split('/')[0]
     @artifact = Artifact.find_by_name(name)
 
-    if @artifact.nil?
-      request_halt("Artifact with name \"#{name}\" does not exists.", 404)
-    end
+    request_halt("Artifact with name \"#{name}\" does not exists.", 404) if @artifact.nil?
   end
 
   before '/:name/version/*' do
     version = params['splat'][0].split('/')[0]
     @version = @artifact.versions.find_by_version(version)
 
-    if @version.nil?
-      request_halt("Version \"#{version}\" for Artifact \"#{@artifact.name}\" does not exists.", 404)
-    end
+    request_halt("Version \"#{version}\" for Artifact \"#{@artifact.name}\" does not exists.", 404) if @version.nil?
     @awv = ArtifactWithVersion.find_by_artifact_id_and_version_id(@artifact.id, @version.id)
   end
 
@@ -47,7 +42,8 @@ class ArtifactController < SecureController
         PutitVersioning.validate_term(artifact[:term])
         latest_version = a.versions.max_by(&:version)
         unless latest_version.version.is_version?
-          raise PutitExceptions::SemanticNotValidVersion, "Last version: #{latest_version.version} for artifact: #{a.name} is not valid SemVer. Cannot proceed. Please set version manually."
+          raise PutitExceptions::SemanticNotValidVersion,
+                "Last version: #{latest_version.version} for artifact: #{a.name} is not valid SemVer. Cannot proceed. Please set version manually."
         end
 
         version = PutitVersioning.new(latest_version.version)
@@ -100,9 +96,7 @@ class ArtifactController < SecureController
     status 202
 
     avw = ArtifactWithVersion.find_by_artifact_id_and_version_id(@artifact.id, @version.id)
-    if avw.nil?
-      avw = ArtifactWithVersion.create!(artifact_id: @artifact.id, version_id: @version.id)
-    end
+    avw = ArtifactWithVersion.create!(artifact_id: @artifact.id, version_id: @version.id) if avw.nil?
     properties = JSON.parse(request.body.read)
 
     current_properties = PROPERTIES_STORE.fetch(@awv.properties_key, {})
@@ -146,7 +140,7 @@ class ArtifactController < SecureController
     if awv
       PROPERTIES_STORE.fetch(awv.properties_key, {})
     else
-      return {}
+      {}
     end
   end
 end

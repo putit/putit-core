@@ -190,5 +190,7 @@ RSpec.configure do |config|
     AService.called = false
     BService.called = false
     CService.called = false
+
+    PROPERTIES_STORE.clear
   end
 end

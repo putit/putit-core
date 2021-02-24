@@ -218,7 +218,7 @@ describe ReleaseController do
     describe 'deleting' do
       it 'should delete release order' do
         ro = ReleaseOrder.first
-        name = URI.escape(ro.name)
+        name = URI.encode_www_form_component(ro.name).gsub('+', '%20')
         ro_id = ro.id
 
         delete "/release/Web%20html%20flat%20release/orders/#{name}"
@@ -234,7 +234,7 @@ describe ReleaseController do
 
     describe 'applications' do
       it 'should get applications from Release order' do
-        name = URI.escape(ReleaseOrder.second.name)
+        name = URI.encode_www_form_component(ReleaseOrder.second.name).gsub('+', '%20')
 
         get "/release/Web%20html%20flat%20release/orders/#{name}/applications"
 
@@ -247,7 +247,7 @@ describe ReleaseController do
 
       it 'should delete applications from Release Order' do
         ro = ReleaseOrder.second
-        name = URI.escape(ro.name)
+        name = URI.encode_www_form_component(ro.name).gsub('+', '%20')
         app = Application.find_by_name('WEBv1')
 
         ids = ro.application_with_versions.where(application_id: app.id).ids
@@ -270,7 +270,7 @@ describe ReleaseController do
       end
 
       it 'should add applications to Release order' do
-        name = URI.escape(ReleaseOrder.first.name)
+        name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
         get "/release/Web%20html%20flat%20release/orders/#{name}/applications"
 
@@ -293,7 +293,7 @@ describe ReleaseController do
       end
 
       it 'should add applications to Release order' do
-        name = URI.escape(ReleaseOrder.first.name)
+        name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
         Release.first.closed!
 
         applications = [{
@@ -310,7 +310,7 @@ describe ReleaseController do
 
       describe 'envs' do
         it 'should get envs attached to Application with Version' do
-          name = URI.escape(ReleaseOrder.second.name)
+          name = URI.encode_www_form_component(ReleaseOrder.second.name).gsub('+', '%20')
 
           get "/release/Web%20html%20flat%20release/orders/#{name}/applications/WEBv1/1.0.0/envs"
 
@@ -331,7 +331,7 @@ describe ReleaseController do
         end
 
         it 'should add env to Application with Version' do
-          name = URI.escape(ReleaseOrder.second.name)
+          name = URI.encode_www_form_component(ReleaseOrder.second.name).gsub('+', '%20')
 
           envs = [{
             env_name: 'uat'
@@ -353,7 +353,7 @@ describe ReleaseController do
         end
 
         it 'should delete env from Application with Version' do
-          name = URI.escape(ReleaseOrder.second.name)
+          name = URI.encode_www_form_component(ReleaseOrder.second.name).gsub('+', '%20')
 
           delete "/release/Web%20html%20flat%20release/orders/#{name}/applications/WEBv1/1.0.0/envs/prod"
 
@@ -369,7 +369,7 @@ describe ReleaseController do
         end
 
         it 'should return error when Env does not exists for Application' do
-          name = URI.escape(ReleaseOrder.second.name)
+          name = URI.encode_www_form_component(ReleaseOrder.second.name).gsub('+', '%20')
 
           envs = [{
             env_name: 'not_exists'
@@ -383,7 +383,7 @@ describe ReleaseController do
     end
 
     it 'should add approvers to Release Order' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
       approvers = [
         {
@@ -409,7 +409,7 @@ describe ReleaseController do
     end
 
     it 'should remove approvers from Release Order' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
       approvers = [
         {
@@ -430,7 +430,7 @@ describe ReleaseController do
     end
 
     it 'should add productionize release order without any approvals' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
       put "/release/Web%20html%20flat%20release/orders/#{name}/productionize"
 
@@ -440,7 +440,7 @@ describe ReleaseController do
     end
 
     it 'should add productionize release order and send approvals' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
       approvers = [
         {
@@ -463,7 +463,7 @@ describe ReleaseController do
     end
 
     it 'should productionize release order with approved approvals' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
       approvers = [
         {

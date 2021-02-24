@@ -6,9 +6,7 @@ class ApplicationController < SecureController
     name = params['splat'][0].split('/')[0]
     @application = Application.find_by_name(name)
 
-    if @application.nil?
-      request_halt("Application with name \"#{name}\" does not exists.", 404)
-    end
+    request_halt("Application with name \"#{name}\" does not exists.", 404) if @application.nil?
   end
 
   before '/:name/versions/*' do
@@ -34,18 +32,14 @@ class ApplicationController < SecureController
     fqdn = params['splat'][0].split('/')[0]
     @host = @env_for_application.hosts.find_by_fqdn(fqdn)
 
-    if @host.nil?
-      request_halt("Host \"#{fqdn}\" for Env \"#{@env_for_application.name}\" does not exists.", 404)
-    end
+    request_halt("Host \"#{fqdn}\" for Env \"#{@env_for_application.name}\" does not exists.", 404) if @host.nil?
   end
 
   before '/:name/envs/:env/events/*' do
     name = params['splat'][0].split('/')[0]
     @event = @env_for_application.events.find_by_(name)
 
-    if @event.nil?
-      request_halt("Event \"#{name}\" for Env \"#{@env_for_application.name}\" does not exists.", 404)
-    end
+    request_halt("Event \"#{name}\" for Env \"#{@env_for_application.name}\" does not exists.", 404) if @event.nil?
   end
 
   before '/:name/envs/:env/pipelines/*' do
@@ -60,7 +54,9 @@ class ApplicationController < SecureController
   before '/:name/envs/:env/properties/*' do
     @properties_key = params['splat'][0].split('/')[0]
     unless PROPERTIES_STORE[@env_for_application.properties_key].key?(@properties_key)
-      request_halt("Properties with key \"#{@properties_key}\" for Env \"#{@env_for_application.name}\" does not exists.", 404)
+      request_halt(
+        "Properties with key \"#{@properties_key}\" for Env \"#{@env_for_application.name}\" does not exists.", 404
+      )
     end
   end
 
@@ -76,9 +72,7 @@ class ApplicationController < SecureController
     credential = params['splat'].last.split('/')[0]
     @credential = Credential.find_by_name(credential)
 
-    if @credential.nil?
-      request_halt("Credential \"#{credential}\" does not exists.", 404)
-    end
+    request_halt("Credential \"#{credential}\" does not exists.", 404) if @credential.nil?
   end
 
   get '/' do
@@ -95,7 +89,8 @@ class ApplicationController < SecureController
       if included_relations.include?('envs')
         query = query.eager_load(:envs)
         # to_json_options[:include][:envs] = {only: [:id, :name]}
-        to_json_options[:include][:envs] = { only: %i[id name pipelines credentials], include: %i[pipelines credential] }
+        to_json_options[:include][:envs] =
+          { only: %i[id name pipelines credentials], include: %i[pipelines credential] }
         to_json_options[:include][:envs][:pipelines] = { only: :name }
         to_json_options[:include][:versions] = { only: %i[id version] }
       end
@@ -132,7 +127,7 @@ class ApplicationController < SecureController
   end
 
   get '/:name/versions' do
-    versions_sorted = @application.versions.sort_by &:version
+    versions_sorted = @application.versions.sort_by(&:version)
     versions_sorted.to_json
   end
 
@@ -148,13 +143,16 @@ class ApplicationController < SecureController
 
       latest_version = @application.versions.max_by(&:version)
       unless latest_version
-        request_halt("Appliction with name \"#{@application.name}\" does not have any defined version yet. Please set at least one version like: 1.0.1", 404)
+        request_halt(
+          "Appliction with name \"#{@application.name}\" does not have any defined version yet. Please set at least one version like: 1.0.1", 404
+        )
       end
 
       PutitVersioning.validate_term(json[:term])
       # check if latest version is match SemVer
       unless latest_version.version.is_version?
-        raise PutitExceptions::SemanticNotValidVersion, "Last version: #{latest_version.version} for application: #{@application.name} is not valid SemVer. Cannot proceed. Please set version manually."
+        raise PutitExceptions::SemanticNotValidVersion,
+              "Last version: #{latest_version.version} for application: #{@application.name} is not valid SemVer. Cannot proceed. Please set version manually."
       end
 
       version = PutitVersioning.new(latest_version.version)
@@ -176,17 +174,14 @@ class ApplicationController < SecureController
     json = JSON.parse(request.body.read, symbolize_names: true)
 
     artifact = Artifact.find_by_name(json[:name])
-    if artifact.nil?
-      request_halt("Artifact with name \"#{json[:name]}\" does not exists", 404)
-    end
+    request_halt("Artifact with name \"#{json[:name]}\" does not exists", 404) if artifact.nil?
 
     version = artifact.versions.find_by_version(json[:version])
-    if version.nil?
-      request_halt("Version \"#{json[:version]}\" for artifact \"#{json[:name]}\" does not exists", 404)
-    end
+    request_halt("Version \"#{json[:version]}\" for artifact \"#{json[:name]}\" does not exists", 404) if version.nil?
 
     avw = ArtifactWithVersion.find_or_create_by!(artifact_id: artifact.id, version_id: version.id)
-    ApplicationWithVersionArtifactWithVersion.find_or_create_by!(artifact_with_version_id: avw.id, application_with_version_id: @application_version.id)
+    ApplicationWithVersionArtifactWithVersion.find_or_create_by!(artifact_with_version_id: avw.id,
+                                                                 application_with_version_id: @application_version.id)
 
     logger.info("Artifact with name: \"#{json[:name]}\" in version: \"#{json[:version]}\ added into application: \"#{@application.name}\" in version: \"#{@application_version.version}\"")
     { status: 'ok' }.to_json
@@ -196,9 +191,7 @@ class ApplicationController < SecureController
     status 202
 
     artifact = Artifact.find_by_name(artifact_name)
-    if artifact.nil?
-      request_halt("Artifact with name \"#{artifact_name}\" does not exists", 404)
-    end
+    request_halt("Artifact with name \"#{artifact_name}\" does not exists", 404) if artifact.nil?
 
     version = artifact.versions.find_by_version(artifact_version)
     if version.nil?
@@ -206,7 +199,8 @@ class ApplicationController < SecureController
     end
 
     avw = ArtifactWithVersion.find_by(artifact_id: artifact.id, version_id: version.id)
-    ApplicationWithVersionArtifactWithVersion.where(artifact_with_version_id: avw.id, application_with_version_id: @application_version.id).destroy_all
+    ApplicationWithVersionArtifactWithVersion.where(artifact_with_version_id: avw.id,
+                                                    application_with_version_id: @application_version.id).destroy_all
 
     logger.info("Artifact with name: \"#{artifact_name}\" in version: \"#{artifact_version}\ deleted from application: \"#{@application.name}\" in version: \"#{@application_version.version}\"")
     { status: 'ok' }.to_json
@@ -277,12 +271,16 @@ class ApplicationController < SecureController
     status 202
     credential = @env_for_application.credential
     if credential.nil?
-      request_halt("No credential assigned to the application: #{@application.name} on Env #{@env_for_application.name}", 404)
+      request_halt(
+        "No credential assigned to the application: #{@application.name} on Env #{@env_for_application.name}", 404
+      )
     end
 
     env_cred = EnvCredential.where(env_id: @env_for_application.id, credential_id: credential.id).first
     if env_cred.nil?
-      request_halt("No such credential with name: #{@credential.name} assigned to the application: #{@application.name} on Env #{@env_for_application.name}", 404)
+      request_halt(
+        "No such credential with name: #{@credential.name} assigned to the application: #{@application.name} on Env #{@env_for_application.name}", 404
+      )
     else
       env_cred.destroy
       logger.info("Unassigned credential with name: #{@credential.name} to the application: #{@application.name} on Env #{@env_for_application.name}")
@@ -369,12 +367,16 @@ class ApplicationController < SecureController
 
     credential = @host.credential
     if credential.nil?
-      request_halt("No credential assigned to the application: #{@application.name} on env #{@env_for_application.name} and host #{@host.fqdn}", 404)
+      request_halt(
+        "No credential assigned to the application: #{@application.name} on env #{@env_for_application.name} and host #{@host.fqdn}", 404
+      )
     end
 
     host_cred = HostCredential.where(host_id: @host.id, credential_id: credential.id).first
     if host_cred.nil?
-      request_halt("No such credential with name: #{@credential.name} assigned to the application: #{@application.name} on Env #{@env_for_application.name} and host #{@host.fqdn}", 404)
+      request_halt(
+        "No such credential with name: #{@credential.name} assigned to the application: #{@application.name} on Env #{@env_for_application.name} and host #{@host.fqdn}", 404
+      )
     else
       host_cred.destroy
       logger.info("Unassigned credential with name: #{@credential.name} from the application: #{@application.name} on Env #{@env_for_application.name} and on Host: #{@host.fqdn}")
@@ -405,7 +407,8 @@ class ApplicationController < SecureController
     end
 
     properties = PropertiesAnonymizer.anonymize(properties)
-    logger.info("Properties set for application #{@application.name} on environment #{@env_for_application.name}", properties)
+    logger.info("Properties set for application #{@application.name} on environment #{@env_for_application.name}",
+                properties)
 
     { status: 'ok' }.to_json
   end
@@ -445,9 +448,7 @@ class ApplicationController < SecureController
       orders = orders.joins(:release).where('releases.status = ?', Release.statuses[:open])
     end
 
-    if params['release']
-      orders = orders.joins(:release).where('releases.name = ?', params['release'])
-    end
+    orders = orders.joins(:release).where('releases.name = ?', params['release']) if params['release']
 
     if params['q']
       q = params['q'].downcase
@@ -460,13 +461,9 @@ class ApplicationController < SecureController
                      )
     end
 
-    if params.include?('start_date')
-      orders = orders.where('start_date >= ?', params['start_date'])
-    end
+    orders = orders.where('start_date >= ?', params['start_date']) if params.include?('start_date')
 
-    if params.include?('end_date')
-      orders = orders.where('start_date < ?', params['end_date'])
-    end
+    orders = orders.where('start_date < ?', params['end_date']) if params.include?('end_date')
 
     orders.to_json(include: included_relations)
   end
@@ -478,9 +475,7 @@ class ApplicationController < SecureController
 
     orders = @env_for_application.get_orders(params).map(&:release_order)
 
-    if params['includeClosedReleases'].to_s != 'true'
-      orders = orders.select { |ro| ro.release.open? }
-    end
+    orders = orders.select { |ro| ro.release.open? } if params['includeClosedReleases'].to_s != 'true'
 
     orders.to_json
   end
@@ -507,7 +502,7 @@ class ApplicationController < SecureController
         count: r.length,
         status: r.group_by(&:status).transform_values(&:count)
       }
-    end .to_json
+    end.to_json
   end
 
   get '/:name/envs/:env/results/count' do
@@ -525,9 +520,7 @@ class ApplicationController < SecureController
 
     Array.wrap(json).each do |pipeline|
       p = DeploymentPipeline.templates.find_by_name(pipeline[:name])
-      if p.nil?
-        request_halt("No template for pipeline with name: \"#{pipeline[:name]}\"", 404)
-      end
+      request_halt("No template for pipeline with name: \"#{pipeline[:name]}\"", 404) if p.nil?
       unless @env_for_application.pipelines.exists?(name: pipeline[:name])
         @env_for_application.pipelines << p.amoeba_dup
       end
@@ -555,7 +548,13 @@ class ApplicationController < SecureController
       log_msg = "Reorder action: insert_at to postion: #{@position} made on pipeline: #{@pipeline.name} for application: \"#{@application.name}\" for env: \"#{@env_for_application.name}\""
     # reorder by actions: move_to_top etc.
     elsif @order_action
-      @pipeline.respond_to?(@order_action) ? @pipeline.send(@order_action) : request_halt("Invalid order action #{@order_action} for pipeline with name: \"#{@pipeline.name}\"", 400)
+      if @pipeline.respond_to?(@order_action)
+        @pipeline.send(@order_action)
+      else
+        request_halt(
+          "Invalid order action #{@order_action} for pipeline with name: \"#{@pipeline.name}\"", 400
+        )
+      end
       log_msg = "Reorder action: #{@order_action} made on pipeline: #{@pipeline.name} for application: \"#{@application.name}\" for env: \"#{@env_for_application.name}\""
     else
       request_halt('Invalid payload. Missing one of attributes: :order_action or :position)', 400)
