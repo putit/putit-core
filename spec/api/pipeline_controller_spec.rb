@@ -41,8 +41,8 @@ describe PipelineController do
   end
 
   it 'should add step template to pipeline template' do
-    Step.templates.create!(name: 'Step2')
-    Step.templates.create!(name: 'Step3')
+    Step.create!(template: true, name: 'Step2')
+    Step.create!(template: true, name: 'Step3')
 
     payload = [{
       name: 'Step2'

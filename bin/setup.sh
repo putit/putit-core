@@ -3,9 +3,10 @@
 set -ue
 
 get_help() {
-  echo -e "Usage: $0 [--pg_config <PATH> --build-only --db-only] "
-  echo -e "\t --pg_config      - path to pg_config"
-  echo -e "\t --build-only     - only install and build gems"
+  echo -e "Usage: $0 [--pgconfig-path <PATH> | --sqlite3-path <PATH> | --build-only | --db-only | --config-only]"
+  echo -e "\t --pgconfig-path  - path to pg_config binary"
+  echo -e "\t --sqlite3-path   - path to sqlite3 install directory"
+  echo -e "\t --build-only     - only install and build dependencies"
   echo -e "\t --db-only        - only setup database"
   echo -e "\t --config-only    - only setup config files"
   echo -e "\t --help|-h        - show this message"
@@ -14,7 +15,7 @@ get_help() {
 parse_args_without_values() {
   if [ -z ${!OPTIND+x} ]; then
     PUTIT_DB_SETUP_ONLY=true
-  elif [[ ${!OPTIND} =~ ${regex} ]]; then 
+  elif [[ ${!OPTIND} =~ ${regex} ]]; then
     true
   else
     get_help
@@ -26,61 +27,65 @@ parse_args() {
   optspec=":h-:"
   local regex="\-\-.*"
   while getopts "$optspec" optchar; do
-      case "${optchar}" in
-          -)
-              case "${OPTARG}" in
-                  pg_config)
-                      val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
-                      PG_CONFIG_PATH=${val}
-                      ;;
-                  build-only)
-                      if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then 
-                        PUTIT_BUILD_ONLY=true
-                      else
-                        get_help
-                        exit 1
-                      fi
-                      ;;
-                  db-only)
-                      if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then 
-                        PUTIT_DB_ONLY=true
-                      else
-                        get_help
-                        exit 1
-                      fi
-                      ;;
-		  config-only)
-		      if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then
-	                PUTIT_CONFIG_ONLY=true
-		      else
-			get_help
-			exit 1
-	              fi
-		      ;;
-                  help)
-                      get_help
-                      exit 0
-                      ;;
-                  *) 
-                      echo "${optspec:0:1} ${OPTARG}" 
-                      if [ "$OPTERR" = 1 ]; then
-                          echo -e "Unknown option --${OPTARG}\n" >&2
-                          get_help
-                          exit 1
-                      fi
-                      ;;
-              esac;;
-          h)
+    case "${optchar}" in
+      -)
+        case "${OPTARG}" in
+          sqlite3-path)
+            val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+            SQLITE3_PATH=${val}
+            ;;
+          pgconfig-path)
+            val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+            PG_CONFIG_PATH=${val}
+            ;;
+          build-only)
+            if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then
+              PUTIT_BUILD_ONLY=true
+            else
               get_help
-              exit 0
-              ;;
+              exit 1
+            fi
+            ;;
+          db-only)
+            if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then
+              PUTIT_DB_ONLY=true
+            else
+              get_help
+              exit 1
+            fi
+            ;;
+          config-only)
+            if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then
+              PUTIT_CONFIG_ONLY=true
+            else
+              get_help
+              exit 1
+            fi
+            ;;
+          help)
+            get_help
+            exit 0
+          ;;
           *)
-              if [ "$OPTERR" = 1 ] || [ "${optspec:0:1}" = ":" ]; then
-                  echo "Non-option argument: '-${OPTARG}'" >&2
-                  exit 1
-              fi
-              ;;
-      esac
+            echo "${optspec:0:1} ${OPTARG}"
+            if [ "$OPTERR" = 1 ]; then
+              echo -e "Unknown option --${OPTARG}\n" >&2
+              get_help
+              exit 1
+          fi
+          ;;
+        esac;;
+      h)
+        get_help
+        exit 0
+        ;;
+      *)
+        if [ "$OPTERR" = 1 ] || [ "${optspec:0:1}" = ":" ]; then
+          echo "Non-option argument: '-${OPTARG}'" >&2
+          exit 1
+        fi
+        ;;
+    esac
   done
 }
 
@@ -124,9 +129,9 @@ log() {
 
 check_ruby() {
   log "INFO" "Checking if Ruby is installed..."
-  local is_ruby=$(ruby -v | grep -Ec 'ruby 2.4|ruby 2.5|ruby 2.6|ruby 2.7|ruby 2.8')
+  local is_ruby=$(ruby -v | grep -Ec 'ruby 2.6|ruby 2.7|ruby 2.8|ruby 2.9')
   if [ ${is_ruby} -ne 1 ]; then
-    log "ERROR" "Please install Ruby 2.4.0 or greater."
+    log "ERROR" "Please install Ruby 2.6.0 or greater."
     exit 1
   else
     log "INFO" "Found: $(ruby -v)"
@@ -138,16 +143,25 @@ set_vars() {
   APP_USER=$(whoami)
   APP_GROUP="${APP_USER}"
   export RACK_ENV="production"
-  export BUNDLER_VERSION="1.16.3"
+  export BUNDLER_VERSION="2.1.4"
 
   local script_dir=$(dirname $(abspath $0))
   export PUTIT_APP_DIR="${script_dir%/bin}"
   export PUTIT_LOG_FILE="${PUTIT_APP_DIR}/log/build.log"
 
+  log "INFO" "Checking if Ruby is installed..."
+  local is_ruby=$(ruby -v 2>/dev/null | grep -Ec 'ruby 2.6|ruby 2.7|ruby 2.8|ruby 2.9')
+  if [ ${is_ruby} -ne 1 ]; then
+    log "ERROR" "Required version of Ruby not found. Please install Ruby 2.6.0 or greater."
+    exit 1
+  else
+    log "INFO" "Found: $(ruby -v)"
+  fi
+
   if type gem >/dev/null 2>&1 ; then
     export PUTIT_GEM_PATH=$(type gem | cut -d' ' -f3)
   else
-    echo >&2 "[ERROR] Required gem binaries not found. Please install gem binary."
+    log "ERROR" "Rubygems package not found in your Ruby distribution. Please install rubygems."
     exit 1
   fi
 
@@ -163,7 +177,6 @@ set_vars() {
   log "DEBUG" "Set \$CONFIG_DIR: $CONFIG_DIR"
   log "DEBUG" "Set \$BUNDLE: $BUNDLE"
   log "DEBUG" "Set \$RUBY: $(which ruby)"
-
 }
 
 set_config() {
@@ -225,22 +238,19 @@ set_config() {
   fi
 }
 
-# check if pg_config is installed - required
-check_pg_config() {
-  if type pg_config >/dev/null 2>&1 ; then
-    export PG_CONFIG_PATH=$(type pg_config | cut -d' ' -f3)
-  elif [[ ! -z ${PG_CONFIG_PATH+x} && -f ${PG_CONFIG_PATH} ]] ; then
-    return 0
-  else
-    echo >&2 "[ERROR] No PostgreSQL binaries found. Please install postgresql-devel package. Please try to specify it as argument .$0 --pg_config <PATH>"
-    exit 1
-  fi
-}
-
 install_bundler_gems() {
   ${BUNDLE} config --local path lib/gems >> ${PUTIT_LOG_FILE}
   ${BUNDLE} config --local without development >> ${PUTIT_LOG_FILE}
-  ${BUNDLE} config --local build.pg --with-pg-config=${PG_CONFIG_PATH} >> ${PUTIT_LOG_FILE}
+
+  if ! [ -z ${SQLITE3_PATH+x} ]; then
+    log "INFO" "Using SQLite3 libraries from ${SQLITE3_PATH}..."
+    ${BUNDLE} config --local build.sqlite3 --with-opt-include=${SQLITE3_PATH}/include --with-opt-lib=${SQLITE3_PATH}/lib --with-cflags='-O2 -DSQLITE_ENABLE_ICU' >> ${PUTIT_LOG_FILE}
+  fi
+
+  if ! [ -z ${PG_CONFIG_PATH+x} ]; then
+    log "INFO" "Using PostgreSQL binaries from $(echo $PG_CONFIG_PATH | sed s,/bin/pg_config,,g)..."
+    ${BUNDLE} config --local build.pg --with-pg-config=${PG_CONFIG_PATH} >> ${PUTIT_LOG_FILE}
+  fi
 
   if [ -f "${PUTIT_APP_DIR}/Gemfile" ]; then
     log "INFO" "Installing gems..."
@@ -311,11 +321,11 @@ setup_db() {
 
 parse_args $@
 set_vars
-check_ruby
+
+pushd ${PUTIT_APP_DIR} >/dev/null 2>&1
 
 if [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  check_pg_config
   install_bundler
   install_bundler_gems
   log "INFO" "Setting up configuration files and start script..."
@@ -323,7 +333,6 @@ if [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ] && [ ! -z ${PUT
   setup_db
 elif [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  check_pg_config
   install_bundler
   install_bundler_gems
   log "INFO" "Skipping configuration files and start script setup..."
@@ -335,7 +344,6 @@ elif [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
   setup_db
 elif [ ! -z ${PUTIT_CONFIG_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  check_pg_config
   install_bundler
   install_bundler_gems
   log "INFO" "Setting up configuration files and start script..."
@@ -352,14 +360,12 @@ elif [ ! -z ${PUTIT_DB_ONLY+x} ]; then
   setup_db
 elif [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  check_pg_config
   install_bundler
   install_bundler_gems
   log "INFO" "Skipping configuration files and start script setup..."
   log "INFO" "Skipping database setup..."
 else
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  check_pg_config
   install_bundler
   install_bundler_gems
   log "INFO" "Setting up configuration files and start script..."
@@ -368,3 +374,5 @@ else
 fi
 
 log "INFO" "Setup done."
+
+popd >/dev/null 2>&1

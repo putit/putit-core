@@ -269,8 +269,8 @@ describe ApplicationController do
       end
 
       it 'should add pipeline to Env' do
-        DeploymentPipeline.templates.create(name: 'P1')
-        DeploymentPipeline.templates.create(name: 'P2')
+        DeploymentPipeline.create(template: true, name: 'P1')
+        DeploymentPipeline.create(template: true, name: 'P2')
 
         payload = [{
           name: 'P1'
@@ -310,8 +310,8 @@ describe ApplicationController do
       end
 
       it 'should reorder pipeline' do
-        DeploymentPipeline.templates.create(name: 'P1')
-        DeploymentPipeline.templates.create(name: 'P2')
+        DeploymentPipeline.create(template: true, name: 'P1')
+        DeploymentPipeline.create(template: true, name: 'P2')
 
         payload = [{
           name: 'P1'

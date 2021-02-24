@@ -50,7 +50,7 @@ class PipelineController < SecureController
 
     json = JSON.parse(request.body.read)
 
-    template = DeploymentPipeline.templates.create!(name: json['name'])
+    template = DeploymentPipeline.create!(template: true, name: json['name'])
     template.update!(json)
     logger.info("Pipeline template with name: #{json['name']} created.")
 
