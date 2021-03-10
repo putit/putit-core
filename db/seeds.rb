@@ -1,4 +1,4 @@
-require_relative './seed/role1_step.rb'
+require_relative './seed/role1_step'
 
 # Clean up old tables
 # (TODO): check is needed
@@ -58,7 +58,8 @@ copy_files_pipeline_template = DeploymentPipeline.create(name: 'copy_files')
 copy_files_pipeline_template.steps << Step.find_by_name('copy_artifacts').amoeba_dup
 
 send_notification_step_template = Step.templates.create(name: 'notification')
-send_notification_step_template.templates.physical_files << PhysicalFile.create!(name: 'notification.j2', content: 'simple notification')
+send_notification_step_template.templates.physical_files << PhysicalFile.create!(name: 'notification.j2',
+                                                                                 content: 'simple notification')
 send_notification_pipeline_template = DeploymentPipeline.create(name: 'send_notifications')
 send_notification_pipeline_template.steps << send_notification_step_template.amoeba_dup
 
@@ -84,7 +85,7 @@ third_version = index_html.versions.create!(version: '3.0.0')
 
 # Crete ArtifactWithVersion which is a connection between artifact and its version to be used in application
 index_with_first_version = ArtifactWithVersion.create!(artifact_id: index_html.id, version_id: first_version.id)
-PROPERTIES_STORE[index_with_first_version.properties_key] = {
+PROPERTIES_STORE['/artifact/flat/index/1.0.0/properties'] = {
   'install_dir' => '/tmp',
   'source_path' => '/opt/source/index/html/1.0.0/index.html',
   'mode' => '0666'
@@ -98,26 +99,34 @@ other_html.versions.create!(version: '1.0.0')
 other_version = other_html.versions.create!(version: '1.4.1')
 
 other_with_version = ArtifactWithVersion.create!(artifact_id: other_html.id, version_id: other_version.id)
-PROPERTIES_STORE[other_with_version.properties_key] = {
+PROPERTIES_STORE['/artifact/flat/other/1.4.1/properties'] = {
   'install_dir' => '/tmp',
   'source_path' => '/opt/source/other/html/1.4.1/other.html',
   'mode' => '0666'
 }
 
 # Application with version will have artifact with version - that's how we know _what_ to deploy
-ApplicationWithVersionArtifactWithVersion.create!(artifact_with_version_id: index_with_first_version.id, application_with_version_id: app_1_v1.id)
-ApplicationWithVersionArtifactWithVersion.create!(artifact_with_version_id: other_with_version.id, application_with_version_id: app_1_v1.id)
+ApplicationWithVersionArtifactWithVersion.create!(artifact_with_version_id: index_with_first_version.id,
+                                                  application_with_version_id: app_1_v1.id)
+ApplicationWithVersionArtifactWithVersion.create!(artifact_with_version_id: other_with_version.id,
+                                                  application_with_version_id: app_1_v1.id)
 
-ApplicationWithVersionArtifactWithVersion.create!(artifact_with_version_id: index_with_third_version.id, application_with_version_id: app_1_v2.id)
-ApplicationWithVersionArtifactWithVersion.create!(artifact_with_version_id: other_with_version.id, application_with_version_id: app_1_v2.id)
+ApplicationWithVersionArtifactWithVersion.create!(artifact_with_version_id: index_with_third_version.id,
+                                                  application_with_version_id: app_1_v2.id)
+ApplicationWithVersionArtifactWithVersion.create!(artifact_with_version_id: other_with_version.id,
+                                                  application_with_version_id: app_1_v2.id)
 
 # Create SSH keys
 k_1 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'ala@ala.com', bits = '1024', passphrase = 'haslo')
 k_2 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'piotr@example.com', bits = 2048, passphrase = 'lkjh')
-k_3 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'mateusz@example.com', bits = 2048, passphrase = 'pkp intercity')
-sshkey_1 = DepSSHKey.create(name: 'sshkey1', keytype: k_1.type, bits: k_1.bits, private_key: k_1.private_key, public_key: k_1.public_key, ssh_public_key: k_1.public_key, ssh2_public_key: k_1.ssh2_public_key, sha256_fingerprint: k_1.sha256_fingerprint)
-sshkey_2 = DepSSHKey.create(name: 'sshkey2', keytype: k_2.type, bits: k_2.bits, private_key: k_2.private_key, public_key: k_2.public_key, ssh_public_key: k_2.public_key, ssh2_public_key: k_2.ssh2_public_key, sha256_fingerprint: k_2.sha256_fingerprint)
-sshkey_3 = DepSSHKey.create(name: 'sshkey3', keytype: k_3.type, bits: k_3.bits, private_key: k_3.private_key, public_key: k_3.public_key, ssh_public_key: k_3.public_key, ssh2_public_key: k_3.ssh2_public_key, sha256_fingerprint: k_3.sha256_fingerprint)
+k_3 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'mateusz@example.com', bits = 2048,
+                                       passphrase = 'pkp intercity')
+sshkey_1 = DepSSHKey.create(name: 'sshkey1', keytype: k_1.type, bits: k_1.bits, private_key: k_1.private_key,
+                            public_key: k_1.public_key, ssh_public_key: k_1.public_key, ssh2_public_key: k_1.ssh2_public_key, sha256_fingerprint: k_1.sha256_fingerprint)
+sshkey_2 = DepSSHKey.create(name: 'sshkey2', keytype: k_2.type, bits: k_2.bits, private_key: k_2.private_key,
+                            public_key: k_2.public_key, ssh_public_key: k_2.public_key, ssh2_public_key: k_2.ssh2_public_key, sha256_fingerprint: k_2.sha256_fingerprint)
+sshkey_3 = DepSSHKey.create(name: 'sshkey3', keytype: k_3.type, bits: k_3.bits, private_key: k_3.private_key,
+                            public_key: k_3.public_key, ssh_public_key: k_3.public_key, ssh2_public_key: k_3.ssh2_public_key, sha256_fingerprint: k_3.sha256_fingerprint)
 
 # Create UNIX users for deployment
 depuser_1 = Depuser.create(username: 'app_user_1')
