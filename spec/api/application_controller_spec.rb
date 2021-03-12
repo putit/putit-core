@@ -323,7 +323,7 @@ describe ApplicationController do
         put '/application/WEBv1/envs/dev/pipelines/P2/order/move_to_top'
 
         expect(last_response.status).to eq 202
-        
+
         a = Application.find_by_name('WEBv1')
         e = a.envs.find_by_name('dev')
 

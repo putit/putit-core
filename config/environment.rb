@@ -132,18 +132,21 @@ FQDN_REGEX = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-_]*[a-zA-Z0-9])\.)*([A-Za-z0
 # rubocop:enable Metrics/LineLength
 
 PROPERTIES_STORE = begin
-  Moneta.new(:ActiveRecord)
-                   rescue StandardError
-                     {}
+  Moneta.build do
+    use(:Pool) do
+      adapter :Memory
+    end
+  end
 end
 
 # properties values for those keys will be anonymized by XXXX in logs
 DEFAULT_ANONYMIZE_PROPERTIES = %w[password passphrase]
 ANONYMIZE_PROPERTIES = Settings.anonymize_properties || DEFAULT_ANONYMIZE_PROPERTIES
 
-require './common/controllers/putit_controller.rb'
-require './common/controllers/secure_controller.rb'
-require './common/services/putit_service.rb'
+require './common/controllers/putit_controller'
+require './common/controllers/secure_controller'
+require './common/services/putit_service'
+require './plugins/integrations/integration_base'
 Dir['./common/*.rb'].each { |file| require file }
 Dir['./models/ansible/*.rb'].each { |file| require file }
 Dir['./models/paper_trail/*.rb'].each { |file| require file }
@@ -156,10 +159,12 @@ Dir['./mailers/*.rb'].each { |file| require file }
 Dir['./helpers/*.rb'].each { |file| require file }
 Dir['./models/wisper/*observer.rb'].each { |file| require file }
 Dir['./models/wisper/global_listener.rb'].each { |file| require file }
+Dir['./plugins/integrations/**/initialize.rb'].each { |file| require file }
+Dir['./plugins/integrations/**/models/*.rb'].each { |file| require file }
 
-#Dir["#{Settings.plugins_path}/**/service.rb"].each do |file|
+# Dir["#{Settings.plugins_path}/**/service.rb"].each do |file|
 #  require file
-#end
+# end
 
 use Rack::Parser
 use RequestStore::Middleware

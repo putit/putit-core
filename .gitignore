@@ -9,3 +9,4 @@ db/*.sqlite3
 config/database.yml-origin
 .ruby-version
 config/settings.yml
+.DS_Store

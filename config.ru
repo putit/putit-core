@@ -14,3 +14,7 @@ map('/pipeline') { run PipelineController }
 map('/orders') { run OrderController }
 map('/integration/jira') { run JiraController }
 map('/setup_wizard') { run SetupWizardController }
+
+Putit::Integration::IntegrationBase.descendants.each do |plugin|
+  map("/handlers/#{plugin.endpoint}") { run plugin }
+end

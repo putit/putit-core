@@ -35,7 +35,7 @@ describe ReleaseController do
 
   it 'should delete release' do
     r = Release.first
-    name = URI.escape(r.name)
+    name = URI.encode_www_form_component(r.name).gsub('+', '%20')
     ro = r.release_orders.first
     r_id = r.id
     ids = r.release_orders.map(&:id)
@@ -44,7 +44,8 @@ describe ReleaseController do
       application_name: 'WEBv1',
       version_name: '2.0.0'
     }]
-    post "/release/#{name}/orders/#{URI.escape(ro.name)}/applications", applications.to_json, 'CONTENT_TYPE': 'application/json'
+    post "/release/#{name}/orders/#{URI.encode_www_form_component(ro.name).gsub('+', '%20')}/applications", applications.to_json,
+         'CONTENT_TYPE': 'application/json'
 
     avw_ids = r.reload.release_orders.first.application_with_versions.ids
 
@@ -134,7 +135,7 @@ describe ReleaseController do
     end
 
     it 'should return given release order' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
       get "/release/Web%20html%20flat%20release/orders/#{name}"
 
       expect(last_response).to be_ok
@@ -217,7 +218,7 @@ describe ReleaseController do
     describe 'deleting' do
       it 'should delete release order' do
         ro = ReleaseOrder.first
-        name = URI.escape(ro.name)
+        name = URI.encode_www_form_component(ro.name).gsub('+', '%20')
         ro_id = ro.id
 
         delete "/release/Web%20html%20flat%20release/orders/#{name}"
@@ -233,7 +234,7 @@ describe ReleaseController do
 
     describe 'applications' do
       it 'should get applications from Release order' do
-        name = URI.escape(ReleaseOrder.second.name)
+        name = URI.encode_www_form_component(ReleaseOrder.second.name).gsub('+', '%20')
 
         get "/release/Web%20html%20flat%20release/orders/#{name}/applications"
 
@@ -246,7 +247,7 @@ describe ReleaseController do
 
       it 'should delete applications from Release Order' do
         ro = ReleaseOrder.second
-        name = URI.escape(ro.name)
+        name = URI.encode_www_form_component(ro.name).gsub('+', '%20')
         app = Application.find_by_name('WEBv1')
 
         ids = ro.application_with_versions.where(application_id: app.id).ids
@@ -269,7 +270,7 @@ describe ReleaseController do
       end
 
       it 'should add applications to Release order' do
-        name = URI.escape(ReleaseOrder.first.name)
+        name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
         get "/release/Web%20html%20flat%20release/orders/#{name}/applications"
 
@@ -281,7 +282,8 @@ describe ReleaseController do
           application_name: 'WEBv1',
           version_name: '2.0.0'
         }]
-        post "/release/Web%20html%20flat%20release/orders/#{name}/applications", applications.to_json, 'CONTENT_TYPE': 'application/json'
+        post "/release/Web%20html%20flat%20release/orders/#{name}/applications", applications.to_json,
+             'CONTENT_TYPE': 'application/json'
 
         expect(last_response.status).to eq 201
 
@@ -291,14 +293,15 @@ describe ReleaseController do
       end
 
       it 'should add applications to Release order' do
-        name = URI.escape(ReleaseOrder.first.name)
+        name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
         Release.first.closed!
 
         applications = [{
           application_name: 'WEBv1',
           version_name: '2.0.0'
         }]
-        post "/release/Web%20html%20flat%20release/orders/#{name}/applications", applications.to_json, 'CONTENT_TYPE': 'application/json'
+        post "/release/Web%20html%20flat%20release/orders/#{name}/applications", applications.to_json,
+             'CONTENT_TYPE': 'application/json'
 
         expect(last_response.status).to eq 403
         result = JSON.parse(last_response.body, symbolize_names: true)
@@ -307,7 +310,7 @@ describe ReleaseController do
 
       describe 'envs' do
         it 'should get envs attached to Application with Version' do
-          name = URI.escape(ReleaseOrder.second.name)
+          name = URI.encode_www_form_component(ReleaseOrder.second.name).gsub('+', '%20')
 
           get "/release/Web%20html%20flat%20release/orders/#{name}/applications/WEBv1/1.0.0/envs"
 
@@ -328,12 +331,13 @@ describe ReleaseController do
         end
 
         it 'should add env to Application with Version' do
-          name = URI.escape(ReleaseOrder.second.name)
+          name = URI.encode_www_form_component(ReleaseOrder.second.name).gsub('+', '%20')
 
           envs = [{
             env_name: 'uat'
           }]
-          post "/release/Web%20html%20flat%20release/orders/#{name}/applications/WEBv1/1.0.0/envs", envs.to_json, 'CONTENT_TYPE': 'application/json'
+          post "/release/Web%20html%20flat%20release/orders/#{name}/applications/WEBv1/1.0.0/envs", envs.to_json,
+               'CONTENT_TYPE': 'application/json'
 
           expect(last_response.status).to eq 201
 
@@ -349,7 +353,7 @@ describe ReleaseController do
         end
 
         it 'should delete env from Application with Version' do
-          name = URI.escape(ReleaseOrder.second.name)
+          name = URI.encode_www_form_component(ReleaseOrder.second.name).gsub('+', '%20')
 
           delete "/release/Web%20html%20flat%20release/orders/#{name}/applications/WEBv1/1.0.0/envs/prod"
 
@@ -365,12 +369,13 @@ describe ReleaseController do
         end
 
         it 'should return error when Env does not exists for Application' do
-          name = URI.escape(ReleaseOrder.second.name)
+          name = URI.encode_www_form_component(ReleaseOrder.second.name).gsub('+', '%20')
 
           envs = [{
             env_name: 'not_exists'
           }]
-          post "/release/Web%20html%20flat%20release/orders/#{name}/applications/WEBv1/1.0.0/envs", envs.to_json, 'CONTENT_TYPE': 'application/json'
+          post "/release/Web%20html%20flat%20release/orders/#{name}/applications/WEBv1/1.0.0/envs", envs.to_json,
+               'CONTENT_TYPE': 'application/json'
 
           expect(last_response.status).to eq 404
         end
@@ -378,7 +383,7 @@ describe ReleaseController do
     end
 
     it 'should add approvers to Release Order' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
       approvers = [
         {
@@ -388,7 +393,8 @@ describe ReleaseController do
           email: 'approver2@putit.io'
         }
       ]
-      post "/release/Web%20html%20flat%20release/orders/#{name}/approvers", approvers.to_json, 'CONTENT_TYPE': 'application/json'
+      post "/release/Web%20html%20flat%20release/orders/#{name}/approvers", approvers.to_json,
+           'CONTENT_TYPE': 'application/json'
 
       expect(last_response.status).to eq 204
 
@@ -403,7 +409,7 @@ describe ReleaseController do
     end
 
     it 'should remove approvers from Release Order' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
       approvers = [
         {
@@ -413,7 +419,8 @@ describe ReleaseController do
           email: 'approver2@putit.io'
         }
       ]
-      post "/release/Web%20html%20flat%20release/orders/#{name}/approvers", approvers.to_json, 'CONTENT_TYPE': 'application/json'
+      post "/release/Web%20html%20flat%20release/orders/#{name}/approvers", approvers.to_json,
+           'CONTENT_TYPE': 'application/json'
 
       delete "/release/Web%20html%20flat%20release/orders/#{name}/approvers/approver1%40putit.io"
       expect(last_response.status).to eq 204
@@ -423,7 +430,7 @@ describe ReleaseController do
     end
 
     it 'should add productionize release order without any approvals' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
       put "/release/Web%20html%20flat%20release/orders/#{name}/productionize"
 
@@ -433,7 +440,7 @@ describe ReleaseController do
     end
 
     it 'should add productionize release order and send approvals' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
       approvers = [
         {
@@ -443,7 +450,8 @@ describe ReleaseController do
           email: 'approver2@putit.io'
         }
       ]
-      post "/release/Web%20html%20flat%20release/orders/#{name}/approvers", approvers.to_json, 'CONTENT_TYPE': 'application/json'
+      post "/release/Web%20html%20flat%20release/orders/#{name}/approvers", approvers.to_json,
+           'CONTENT_TYPE': 'application/json'
 
       expect(ApprovalMailer).to receive(:deliver_approval_email).twice
 
@@ -455,7 +463,7 @@ describe ReleaseController do
     end
 
     it 'should productionize release order with approved approvals' do
-      name = URI.escape(ReleaseOrder.first.name)
+      name = URI.encode_www_form_component(ReleaseOrder.first.name).gsub('+', '%20')
 
       approvers = [
         {
@@ -465,7 +473,8 @@ describe ReleaseController do
           email: 'approver2@putit.io'
         }
       ]
-      post "/release/Web%20html%20flat%20release/orders/#{name}/approvers", approvers.to_json, 'CONTENT_TYPE': 'application/json'
+      post "/release/Web%20html%20flat%20release/orders/#{name}/approvers", approvers.to_json,
+           'CONTENT_TYPE': 'application/json'
 
       Approval.first.update!(accepted: true)
       expect(ReleaseOrder.first.status).to eq 'working'

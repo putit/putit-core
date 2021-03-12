@@ -20,10 +20,4 @@ task :pry, :environment do |_t, args|
   exec 'bundle exec pry -I . -r ./config/environment.rb'
 end
 
-desc 'save playbook'
-task :save_playbook, :application_name do |_t, args|
-  app_name = args[:application_name]
-  pp ReleaseOrder.all
-end
-
 task default: :spec

@@ -17,7 +17,7 @@ gem 'moneta'
 gem 'paper_trail', '~> 10.3.0'
 gem 'paper_trail-sinatra'
 gem 'paranoia', '~> 2.2'
-gem 'pg', '~> 1.2.0'
+gem 'pg'
 gem 'pony'
 gem 'rack', '>2.0'
 gem 'rack-parser', require: 'rack/parser'
@@ -56,7 +56,7 @@ end
 require 'yaml'
 settings_file = File.join(__dir__, 'config/settings.yml')
 if File.file?(settings_file)
-  settings = YAML::load_file(settings_file)
+  settings = YAML.load_file(settings_file)
   Dir["#{settings['plugins_path']}/**/Gemfile"].each do |file|
     instance_eval(File.read(file))
   end

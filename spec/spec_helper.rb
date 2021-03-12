@@ -132,6 +132,10 @@ module RSpecMixin
         run OrderController
       end
 
+      Putit::Integration::IntegrationBase.descendants.each do |plugin|
+        map("/handlers/#{plugin.endpoint}") { run plugin }
+      end
+
       map '/' do
         run ReleaseController
       end
@@ -175,6 +179,18 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
 
     allow_any_instance_of(SecureController).to receive(:check_token).and_return(true)
+
+    PROPERTIES_STORE['/artifact/flat/index/1.0.0/properties'] = {
+      'install_dir' => '/tmp',
+      'source_path' => '/opt/source/index/html/1.0.0/index.html',
+      'mode' => '0666'
+    }
+
+    PROPERTIES_STORE['/artifact/flat/other/1.4.1/properties'] = {
+      'install_dir' => '/tmp',
+      'source_path' => '/opt/source/other/html/1.4.1/other.html',
+      'mode' => '0666'
+    }
   end
 
   config.before(:each) do
@@ -186,5 +202,7 @@ RSpec.configure do |config|
     AService.called = false
     BService.called = false
     CService.called = false
+
+    PROPERTIES_STORE.clear
   end
 end
