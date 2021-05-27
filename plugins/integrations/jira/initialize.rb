@@ -24,7 +24,7 @@ module PutitJira
       uri.query = URI.encode_www_form({ jql: "Project = #{body[:projectId]} and fixVersion = #{body[:name]}" })
 
       req = Net::HTTP::Get.new(uri)
-      req.basic_auth 'matmaw@gmail.com', 'l6a8tTpTLKOzT8bebhuw48DD'
+      req.basic_auth Settings.username, Settings.password
 
       res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
         http.request(req)
