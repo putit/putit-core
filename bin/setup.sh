@@ -127,9 +127,9 @@ set_vars() {
   export CONFIG_DIR="${PUTIT_APP_DIR}/config"
 
   log "INFO" "Checking if Ruby is installed..."
-  local is_ruby=$(ruby -v 2>/dev/null | grep -Ec 'ruby 2.6|ruby 2.7|ruby 2.8|ruby 2.9')
+  local is_ruby=$(ruby -v 2>/dev/null | grep -Ec 'ruby 2.7|ruby 3.0|ruby 3.1')
   if [ ${is_ruby} -ne 1 ]; then
-    log "ERROR" "Required version of Ruby not found. Please install Ruby 2.6.0 or greater."
+    log "ERROR" "Required version of Ruby not found. Please install Ruby 2.7.0 or greater."
     exit 1
   else
     log "INFO" "Found: $(ruby -v)"
