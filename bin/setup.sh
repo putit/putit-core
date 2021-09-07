@@ -1,5 +1,4 @@
 #!/bin/bash
-# This script is for building and install gems for putit-auth
 set -ue
 
 get_help() {
@@ -103,10 +102,10 @@ log() {
   local log_event_to_file="$date [PUTIT] [$sub_command] [$level] $msg"
   local log_event_to_console="[$level] $msg"
 
-  # drop debug messages when PUTIT_DEBUG_CLI is not set
+  # drop debug messages if PUTIT_DEBUG_BUILD is not set
   if [ $level == 'DEBUG' ] && [ -z ${PUTIT_DEBUG_BUILD+x} ]; then
     echo > /dev/null
-  # when putit should NOT log on console
+  # do not log to console if PUTIT_DISABLE_LOG_CONSOLE is set
   elif [[ ! -z ${PUTIT_DISABLE_LOG_CONSOLE+x} && "$PUTIT_LOG_CONSOLE" == "true" ]]; then
     echo "$log_event_to_file" >> $PUTIT_LOG_FILE
   else
@@ -116,7 +115,6 @@ log() {
   unset date
 }
 
-# set putit GEM_HOME and add GEM_HOME/bin to the path
 set_vars() {
   APP_USER=$(whoami)
   APP_GROUP="${APP_USER}"
