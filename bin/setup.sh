@@ -158,6 +158,8 @@ set_vars() {
 }
 
 set_config() {
+  log "INFO" "Setting up configuration files and start script..."
+
   local run_script="${PUTIT_APP_DIR}/bin/run.sh"
   local run_script_template="${PUTIT_APP_DIR}/bin/run.sh.template"
   local thin_config_template="${CONFIG_DIR}/thin.yml.template"
@@ -217,6 +219,8 @@ set_config() {
 }
 
 install_bundler_gems() {
+  log "INFO" "Installing gems..."
+
   ${BUNDLE} config --local path lib/gems >> ${PUTIT_LOG_FILE}
   ${BUNDLE} config --local without development >> ${PUTIT_LOG_FILE}
 
@@ -231,7 +235,6 @@ install_bundler_gems() {
   fi
 
   if [ -f "${PUTIT_APP_DIR}/Gemfile" ]; then
-    log "INFO" "Installing gems..."
     if $(${BUNDLE} install --gemfile="${PUTIT_APP_DIR}/Gemfile" >> ${PUTIT_LOG_FILE}) ; then
       return 0
     else
@@ -306,7 +309,6 @@ if [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ] && [ ! -z ${PUT
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
   install_bundler
   install_bundler_gems
-  log "INFO" "Setting up configuration files and start script..."
   set_config
   setup_db
 elif [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
@@ -317,19 +319,16 @@ elif [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   setup_db
 elif [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
   log "INFO" "Skipping build..."
-  log "INFO" "Setting up configuration files and start script..."
   set_config
   setup_db
 elif [ ! -z ${PUTIT_CONFIG_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
   install_bundler
   install_bundler_gems
-  log "INFO" "Setting up configuration files and start script..."
   set_config
   log "INFO" "Skipping database setup..."
 elif [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
   log "INFO" "Skipping build..."
-  log "INFO" "Setting up configuration files and start script..."
   set_config
   log "INFO" "Skipping database setup..."
 elif [ ! -z ${PUTIT_DB_ONLY+x} ]; then
@@ -346,7 +345,6 @@ else
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
   install_bundler
   install_bundler_gems
-  log "INFO" "Setting up configuration files and start script..."
   set_config
   setup_db
 fi
