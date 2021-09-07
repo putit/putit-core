@@ -270,10 +270,9 @@ run_db_migrations() {
 }
 
 run_db_schema_load() {
-  cd ${PUTIT_APP_DIR}
-  if [ -f config/secrets.yml ]; then
+  if [ -f ${CONFIG_DIR}/secrets.yml ]; then
     log "INFO" "Generating database secret key..."
-    sed -i s/SECRET_KEY_TEMPLATE/$(head /dev/urandom | tr -dc a-f0-9 | head -c 128)/g config/secrets.yml
+    sed -i s/SECRET_KEY_TEMPLATE/$(head /dev/urandom | tr -dc a-f0-9 | head -c 128)/g ${CONFIG_DIR}/secrets.yml
   fi
   log "INFO" "Running database schema load..."
   if ${BUNDLE} exec rake db:schema:load >> ${PUTIT_LOG_FILE}; then
