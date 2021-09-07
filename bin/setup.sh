@@ -116,14 +116,15 @@ log() {
 }
 
 set_vars() {
-  APP_USER=$(whoami)
-  APP_GROUP="${APP_USER}"
+  export APP_USER=$(whoami)
+  export APP_GROUP="${APP_USER}"
   export RACK_ENV="production"
   export BUNDLER_VERSION="2.1.4"
 
   local script_dir=$(dirname $(abspath $0))
   export PUTIT_APP_DIR="${script_dir%/bin}"
   export PUTIT_LOG_FILE="${PUTIT_APP_DIR}/log/build.log"
+  export CONFIG_DIR="${PUTIT_APP_DIR}/config"
 
   log "INFO" "Checking if Ruby is installed..."
   local is_ruby=$(ruby -v 2>/dev/null | grep -Ec 'ruby 2.6|ruby 2.7|ruby 2.8|ruby 2.9')
@@ -142,7 +143,6 @@ set_vars() {
   fi
 
   export GEM_HOME="${PUTIT_APP_DIR}/lib/bundler"
-  export CONFIG_DIR="${PUTIT_APP_DIR}/config"
 
   BUNDLE="$GEM_HOME/bin/bundle"
 
