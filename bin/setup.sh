@@ -12,17 +12,6 @@ get_help() {
   echo -e "\t --help|-h        - show this message"
 }
 
-parse_args_without_values() {
-  if [ -z ${!OPTIND+x} ]; then
-    PUTIT_DB_SETUP_ONLY=true
-  elif [[ ${!OPTIND} =~ ${regex} ]]; then
-    true
-  else
-    get_help
-    exit 1
-  fi
-}
-
 parse_args() {
   optspec=":h-:"
   local regex="\-\-.*"
@@ -125,17 +114,6 @@ log() {
     echo "$log_event_to_file" >> $PUTIT_LOG_FILE
   fi
   unset date
-}
-
-check_ruby() {
-  log "INFO" "Checking if Ruby is installed..."
-  local is_ruby=$(ruby -v | grep -Ec 'ruby 2.6|ruby 2.7|ruby 2.8|ruby 2.9')
-  if [ ${is_ruby} -ne 1 ]; then
-    log "ERROR" "Please install Ruby 2.6.0 or greater."
-    exit 1
-  else
-    log "INFO" "Found: $(ruby -v)"
-  fi
 }
 
 # set putit GEM_HOME and add GEM_HOME/bin to the path
