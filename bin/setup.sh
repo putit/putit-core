@@ -242,7 +242,6 @@ install_gems() {
 
 run_db_migrations() {
   log "INFO" "Running database migration..."
-  cd ${PUTIT_APP_DIR}
   if $(bundler exec rake db:migrate >> ${PUTIT_LOG_FILE}); then
     return 0
   else
@@ -257,7 +256,7 @@ run_db_schema_load() {
     sed -i s/SECRET_KEY_TEMPLATE/$(head /dev/urandom | tr -dc a-f0-9 | head -c 128)/g ${CONFIG_DIR}/secrets.yml
   fi
   log "INFO" "Running database schema load..."
-  if bundler exec rake db:schema:load >> ${PUTIT_LOG_FILE}; then
+  if $(bundler exec rake db:schema:load >> ${PUTIT_LOG_FILE}); then
     return 0
   else
     log "ERROR" "Unable to load DB schema. Check out the log: ${PUTIT_LOG_FILE} for more details."
