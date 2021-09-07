@@ -106,7 +106,7 @@ log() {
   if [ $level == 'DEBUG' ] && [ -z ${PUTIT_DEBUG_BUILD+x} ]; then
     echo > /dev/null
   # do not log to console if PUTIT_DISABLE_LOG_CONSOLE is set
-  elif [[ ! -z ${PUTIT_DISABLE_LOG_CONSOLE+x} && "$PUTIT_LOG_CONSOLE" == "true" ]]; then
+  elif [[ ! -z ${PUTIT_DISABLE_LOG_CONSOLE+x} ]]; then
     echo "$log_event_to_file" >> $PUTIT_LOG_FILE
   else
     echo "$log_event_to_console"
