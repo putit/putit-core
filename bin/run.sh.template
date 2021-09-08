@@ -8,8 +8,6 @@ PUTIT_APP_DIR="APP_DIR_TEMPLATE"
 function set_vars {
   export PORT="$(grep 'port' ${PUTIT_APP_DIR}/config/thin.yml | awk '{print $2}')"
   export PID_FILE="${PUTIT_APP_DIR}/tmp/thin.${PORT}.pid"
-  export GEM_HOME="${PUTIT_APP_DIR}/lib/bundler"
-  BUNDLE=$GEM_HOME/bin/bundle
 }
 
 get_pid_from_pid_file() {
@@ -65,7 +63,7 @@ start_putit_app () {
     fi
   else
     echo "Starting thin ${PUTIT_APP_NAME}..."
-    ${BUNDLE} exec thin -C ${PUTIT_APP_DIR}/config/thin.yml start
+    bundler exec thin -C ${PUTIT_APP_DIR}/config/thin.yml start
   fi
 }
 
@@ -73,7 +71,7 @@ stop_putit_app () {
   if [ -f ${PID_FILE} ]; then
     local pid=$(get_pid_from_pid_file)
     if [ "$(is_running)" -eq "1" ]; then
-      ${BUNDLE} exec thin -C ${PUTIT_APP_DIR}/config/thin.yml stop
+      bundler exec thin -C ${PUTIT_APP_DIR}/config/thin.yml stop
     elif [ "$(is_running)" -eq "0" ]; then
       echo -e "$0: ${PID_FILE} exist but process is not running, removing pid file..."
       rm -f ${PID_FILE}

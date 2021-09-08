@@ -119,7 +119,6 @@ set_vars() {
   export APP_USER=$(whoami)
   export APP_GROUP="${APP_USER}"
   export RACK_ENV="production"
-  export BUNDLER_VERSION="2.1.4"
 
   local script_dir=$(dirname $(abspath $0))
   export PUTIT_APP_DIR="${script_dir%/bin}"
@@ -135,24 +134,21 @@ set_vars() {
     log "INFO" "Found: $(ruby -v)"
   fi
 
-  if type gem >/dev/null 2>&1 ; then
-    export PUTIT_GEM_PATH=$(type gem | cut -d' ' -f3)
-  else
-    log "ERROR" "Rubygems package not found in your Ruby distribution. Please install rubygems."
+  log "INFO" "Checking if Bundler is installed..."
+  local is_bundler=$(bundler -v 2>/dev/null | grep -Ec 'Bundler version 2.1.*')
+  if [ ${is_bundler} -ne 1 ]; then
+    log "ERROR" "Required version of Bundler not found in your Ruby distribution. Please install Bundler 2.1.0 or greater."
     exit 1
+  else
+    log "INFO" "Found: $(bundler -v)"
   fi
 
-  export GEM_HOME="${PUTIT_APP_DIR}/lib/bundler"
-
-  BUNDLE="$GEM_HOME/bin/bundle"
-
+  log "DEBUG" "Set \$RUBY: $(which ruby)"
+  log "DEBUG" "Set \$BUNDLE: $(which bundler)"
   log "DEBUG" "Set \$APP_USER: $APP_USER"
   log "DEBUG" "Set \$APP_GROUP: $APP_GROUP"
   log "DEBUG" "Set \$PUTIT_APP_DIR: $PUTIT_APP_DIR"
-  log "DEBUG" "Set \$PUTIT_GEM: $PUTIT_GEM_PATH"
   log "DEBUG" "Set \$CONFIG_DIR: $CONFIG_DIR"
-  log "DEBUG" "Set \$BUNDLE: $BUNDLE"
-  log "DEBUG" "Set \$RUBY: $(which ruby)"
 }
 
 set_config() {
@@ -216,24 +212,24 @@ set_config() {
   fi
 }
 
-install_bundler_gems() {
+install_gems() {
   log "INFO" "Installing gems..."
 
-  ${BUNDLE} config --local path lib/gems >> ${PUTIT_LOG_FILE}
-  ${BUNDLE} config --local without development >> ${PUTIT_LOG_FILE}
+  bundler config --local path lib/gems >> ${PUTIT_LOG_FILE}
+  bundler config --local without development >> ${PUTIT_LOG_FILE}
 
   if ! [ -z ${SQLITE3_PATH+x} ]; then
     log "INFO" "Using SQLite3 libraries from ${SQLITE3_PATH}..."
-    ${BUNDLE} config --local build.sqlite3 --with-opt-include=${SQLITE3_PATH}/include --with-opt-lib=${SQLITE3_PATH}/lib --with-cflags='-O2 -DSQLITE_ENABLE_ICU' >> ${PUTIT_LOG_FILE}
+    bundler config --local build.sqlite3 --with-opt-include=${SQLITE3_PATH}/include --with-opt-lib=${SQLITE3_PATH}/lib --with-cflags='-O2 -DSQLITE_ENABLE_ICU' >> ${PUTIT_LOG_FILE}
   fi
 
   if ! [ -z ${PG_CONFIG_PATH+x} ]; then
     log "INFO" "Using PostgreSQL binaries from $(echo $PG_CONFIG_PATH | sed s,/bin/pg_config,,g)..."
-    ${BUNDLE} config --local build.pg --with-pg-config=${PG_CONFIG_PATH} >> ${PUTIT_LOG_FILE}
+    bundler config --local build.pg --with-pg-config=${PG_CONFIG_PATH} >> ${PUTIT_LOG_FILE}
   fi
 
   if [ -f "${PUTIT_APP_DIR}/Gemfile" ]; then
-    if $(${BUNDLE} install --gemfile="${PUTIT_APP_DIR}/Gemfile" >> ${PUTIT_LOG_FILE}) ; then
+    if $(bundler install --gemfile="${PUTIT_APP_DIR}/Gemfile" >> ${PUTIT_LOG_FILE}) ; then
       return 0
     else
       log "ERROR" "Error while installing gems. Check out the log: ${PUTIT_LOG_FILE} for more details."
@@ -244,24 +240,9 @@ install_bundler_gems() {
   fi
 }
 
-install_bundler() {
-  if [ -f ${BUNDLE} ] && [ -d ${GEM_HOME}/gems/bundler-${BUNDLER_VERSION} ]; then
-    log "INFO" "Bundler seems to be already installed, skipping..."
-  else
-    log "INFO" "Installing Bundler..."
-    if $(${PUTIT_GEM_PATH} install bundler --version=${BUNDLER_VERSION} --no-document --no-user-install --bindir=$GEM_HOME/bin --env-shebang >> ${PUTIT_LOG_FILE}); then
-      return 0
-    else
-      log "ERROR" "Error installing Bundler. Check out the log: ${PUTIT_LOG_FILE} for more details."
-      exit 1
-    fi
-  fi
-}
-
 run_db_migrations() {
   log "INFO" "Running database migration..."
-  cd ${PUTIT_APP_DIR}
-  if $(${BUNDLE} exec rake db:migrate >> ${PUTIT_LOG_FILE}); then 
+  if $(bundler exec rake db:migrate >> ${PUTIT_LOG_FILE}); then
     return 0
   else
     log "ERROR" "Error while running DB migrations. Check out the log: ${PUTIT_LOG_FILE} for more details."
@@ -275,7 +256,7 @@ run_db_schema_load() {
     sed -i s/SECRET_KEY_TEMPLATE/$(head /dev/urandom | tr -dc a-f0-9 | head -c 128)/g ${CONFIG_DIR}/secrets.yml
   fi
   log "INFO" "Running database schema load..."
-  if ${BUNDLE} exec rake db:schema:load >> ${PUTIT_LOG_FILE}; then
+  if $(bundler exec rake db:schema:load >> ${PUTIT_LOG_FILE}); then
     return 0
   else
     log "ERROR" "Unable to load DB schema. Check out the log: ${PUTIT_LOG_FILE} for more details."
@@ -284,7 +265,7 @@ run_db_schema_load() {
 
 setup_db() {
   log "INFO" "Checking database connection..."
-  db_version=$(${BUNDLE} exec rake db:version 2>/dev/null | sed s/"Current version: "//g)
+  db_version=$(bundler exec rake db:version 2>/dev/null | sed s/"Current version: "//g)
   if [ -z ${db_version} ]; then
     log "ERROR" "Could not connect to the database. Check the database connection and re-run the setup script with --db-only flag."
     exit 1
@@ -304,14 +285,12 @@ pushd ${PUTIT_APP_DIR} >/dev/null 2>&1
 
 if [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  install_bundler
-  install_bundler_gems
+  install_gems
   set_config
   setup_db
 elif [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  install_bundler
-  install_bundler_gems
+  install_gems
   log "INFO" "Skipping configuration files and start script setup..."
   setup_db
 elif [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
@@ -320,8 +299,7 @@ elif [ ! -z ${PUTIT_DB_ONLY+x} ] && [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
   setup_db
 elif [ ! -z ${PUTIT_CONFIG_ONLY+x} ] && [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  install_bundler
-  install_bundler_gems
+  install_gems
   set_config
   log "INFO" "Skipping database setup..."
 elif [ ! -z ${PUTIT_CONFIG_ONLY+x} ]; then
@@ -334,14 +312,12 @@ elif [ ! -z ${PUTIT_DB_ONLY+x} ]; then
   setup_db
 elif [ ! -z ${PUTIT_BUILD_ONLY+x} ]; then
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  install_bundler
-  install_bundler_gems
+  install_gems
   log "INFO" "Skipping configuration files and start script setup..."
   log "INFO" "Skipping database setup..."
 else
   log "INFO" "Starting build, details can be found in ${PUTIT_LOG_FILE}..."
-  install_bundler
-  install_bundler_gems
+  install_gems
   set_config
   setup_db
 fi
