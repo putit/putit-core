@@ -1,0 +1,15 @@
+{
+    "timestamp": 1599604370956,
+    "webhookEvent": "jira:version_released",
+    "version": {
+        "self": "https://putit.atlassian.net/rest/api/2/version/10000",
+        "id": "10000",
+        "description": "",
+        "name": "1.0",
+        "archived": false,
+        "released": true,
+        "overdue": false,
+        "userReleaseDate": "09/Sep/20",
+        "projectId": 10002
+    }
+}
