@@ -330,7 +330,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_204242) do
     t.integer "status"
     t.string "name"
     t.datetime "deleted_at"
-    t.jsonb "metadata"
+    t.jsonb "metadata", default: {}
     t.index ["deleted_at"], name: "index_release_orders_on_deleted_at"
     t.index ["name"], name: "index_release_orders_on_name"
     t.index ["release_id"], name: "index_release_orders_on_release_id"
@@ -342,7 +342,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_204242) do
     t.datetime "updated_at", null: false
     t.integer "status"
     t.datetime "deleted_at"
-    t.jsonb "metadata"
+    t.jsonb "metadata", default: {}
     t.index ["deleted_at"], name: "index_releases_on_deleted_at"
   end
 

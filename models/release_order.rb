@@ -28,7 +28,9 @@ class ReleaseOrder < ActiveRecord::Base
   include Putit::ActiveRecordLogging
   include Wisper.model
 
-  serialize :metadata, JSON
+  if connection.adapter_name.downcase.to_sym != :postgresql 
+    serialize :metadata, JSON
+  end
 
   belongs_to :release
 

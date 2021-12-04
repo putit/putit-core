@@ -20,7 +20,9 @@ class Release < ActiveRecord::Base
 
   include Putit::ActiveRecordLogging
 
-  serialize :metadata, JSON
+  if connection.adapter_name.downcase.to_sym != :postgresql 
+    serialize :metadata, JSON
+  end
 
   validates_presence_of :name
   validates_format_of :name, with: /\A[\w. -]+\z/

@@ -24,7 +24,11 @@ module PutitJira
         [200, { status: 'ok '}.to_json]
       when /\/handlers\/jira\/release\/(\d+)\/attachTo\/(\d+)/
         ro = ReleaseOrder.find($2)
-        ro.metadata['jira_release'] = $1
+        if ro.nil?
+          return [404, { status: 'error', msg: "Cannot find Release Order with id=#{$2}"}]
+        end
+
+        ro.metadata = ro.metadata.merge ({ jira_release: "#{$1}" })
         ro.save!
         [200, { status: 'ok '}.to_json]
       # search
