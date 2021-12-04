@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_29_213233) do
+ActiveRecord::Schema.define(version: 2021_12_04_204242) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "ansible_defaults", force: :cascade do |t|
     t.integer "step_id"
@@ -326,8 +329,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.binary "archive"
     t.integer "status"
     t.string "name"
-    t.string "metadata", default: "{}"
     t.datetime "deleted_at"
+    t.jsonb "metadata"
     t.index ["deleted_at"], name: "index_release_orders_on_deleted_at"
     t.index ["name"], name: "index_release_orders_on_name"
     t.index ["release_id"], name: "index_release_orders_on_release_id"
@@ -338,8 +341,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status"
-    t.string "metadata", default: "{}"
     t.datetime "deleted_at"
+    t.jsonb "metadata"
     t.index ["deleted_at"], name: "index_releases_on_deleted_at"
   end
 

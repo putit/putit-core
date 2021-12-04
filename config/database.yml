@@ -2,7 +2,7 @@
 
 users:
   adapter: sqlite3
-  database: ../putit-auth/db/<%= ENV['RACK_ENV'] %>.sqlite3
+  database: ../putit-auth/db/test.sqlite3
   pool: 10
   timeout: 10000
 
@@ -23,6 +23,16 @@ test:
   database: db/test.sqlite3
   pool: 10
   timeout: 10000
+
+test-postgres:
+  adapter: postgresql
+  encoding: unicode
+  database: putit_core
+  host: 127.0.0.1
+  port: 5432
+  pool: 10
+  username: putit
+  password: putit
 
 
 # This is an example of production-ready PostgreSQL config.
