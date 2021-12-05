@@ -7,7 +7,7 @@ module PutitJira
     listen_for_webhook_on_url 'jira'
 
     on_webhook do |data, request|
-      case request.path
+      case request.path.chomp('/')
       when '/handlers/jira/releases'
         [200, JiraVersionReleasedIncomingWebhook.all.to_json]
       when '/handlers/jira'
@@ -21,7 +21,7 @@ module PutitJira
           release_date: body[:userReleaseDate],
           raw: data
         )
-        [200, { status: 'ok '}.to_json]
+        [201, { status: 'ok'}.to_json]
       when /\/handlers\/jira\/release\/(\d+)\/attachTo\/(\d+)/
         ro = ReleaseOrder.find($2)
         if ro.nil?
@@ -30,7 +30,7 @@ module PutitJira
 
         ro.metadata = ro.metadata.merge ({ jira_release: "#{$1}" })
         ro.save!
-        [200, { status: 'ok '}.to_json]
+        [200, { status: 'ok'}.to_json]
       # search
       else
         [404, '']
