@@ -6,6 +6,8 @@ require 'fileutils'
 require 'json'
 require 'pp'
 
+ActiveRecord::Migrator.migrations_paths += Dir.glob('plugins/integrations/*/migrate')
+
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = Dir.glob('spec/**/*_spec.rb')
   t.rspec_opts = '--format documentation'
