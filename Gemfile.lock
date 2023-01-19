@@ -137,7 +137,7 @@ GEM
     psych (5.0.1)
       stringio
     public_suffix (5.0.1)
-    rack (2.2.4)
+    rack (2.2.6.2)
     rack-parser (0.7.0)
       rack
     rack-protection (3.0.4)
