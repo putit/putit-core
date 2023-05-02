@@ -117,7 +117,7 @@ ApplicationWithVersionArtifactWithVersion.create!(artifact_with_version_id: othe
                                                   application_with_version_id: app_1_v2.id)
 
 # Create SSH keys
-k_1 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'ala@ala.com', bits = '1024', passphrase = 'haslo')
+k_1 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'ala@ala.com', bits = 1024, passphrase = 'haslo')
 k_2 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'piotr@example.com', bits = 2048, passphrase = 'lkjh')
 k_3 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'mateusz@example.com', bits = 2048,
                                        passphrase = 'pkp intercity')
