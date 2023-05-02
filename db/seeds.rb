@@ -117,10 +117,9 @@ ApplicationWithVersionArtifactWithVersion.create!(artifact_with_version_id: othe
                                                   application_with_version_id: app_1_v2.id)
 
 # Create SSH keys
-k_1 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'ala@ala.com', bits = 1024, passphrase = 'haslo')
-k_2 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'piotr@example.com', bits = 2048, passphrase = 'lkjh')
-k_3 = ManageSSHKeyService.generate_key(type = 'DSA', comment = 'mateusz@example.com', bits = 2048,
-                                       passphrase = 'pkp intercity')
+k_1 = SSHKey.generate({ type: 'DSA', comment: 'ala@ala.com', bits: 1024, passphrase: 'haslo' })
+k_2 = SSHKey.generate({ type: 'DSA', comment: 'piotr@example.com', bits: 2048, passphrase: 'lkjh' })
+k_3 = SSHKey.generate({ type: 'DSA', comment: 'mateusz@example.com', bits: 2048, passphrase: 'pkp intercity' })
 sshkey_1 = DepSSHKey.create(name: 'sshkey1', keytype: k_1.type, bits: k_1.bits, private_key: k_1.private_key,
                             public_key: k_1.public_key, ssh_public_key: k_1.public_key, ssh2_public_key: k_1.ssh2_public_key, sha256_fingerprint: k_1.sha256_fingerprint)
 sshkey_2 = DepSSHKey.create(name: 'sshkey2', keytype: k_2.type, bits: k_2.bits, private_key: k_2.private_key,
