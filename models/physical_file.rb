@@ -5,14 +5,10 @@
 #  id            :integer          not null, primary key
 #  name          :string
 #  content       :binary
-#  fileable_type :string           indexed => [fileable_id]
-#  fileable_id   :integer          indexed => [fileable_type]
+#  fileable_type :string
+#  fileable_id   :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#
-# Indexes
-#
-#  index_physical_files_on_fileable_type_and_fileable_id  (fileable_type,fileable_id)
 #
 
 class PhysicalFile < ActiveRecord::Base

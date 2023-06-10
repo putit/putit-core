@@ -10,47 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_29_213233) do
-
+ActiveRecord::Schema[7.0].define(version: 2020_10_29_213233) do
   create_table "ansible_defaults", force: :cascade do |t|
     t.integer "step_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["step_id"], name: "index_ansible_defaults_on_step_id"
   end
 
   create_table "ansible_files", force: :cascade do |t|
     t.integer "step_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["step_id"], name: "index_ansible_files_on_step_id"
   end
 
   create_table "ansible_handlers", force: :cascade do |t|
     t.integer "step_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["step_id"], name: "index_ansible_handlers_on_step_id"
   end
 
   create_table "ansible_tasks", force: :cascade do |t|
     t.integer "step_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["step_id"], name: "index_ansible_tasks_on_step_id"
   end
 
   create_table "ansible_templates", force: :cascade do |t|
     t.integer "step_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["step_id"], name: "index_ansible_templates_on_step_id"
   end
 
   create_table "ansible_vars", force: :cascade do |t|
     t.integer "step_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["step_id"], name: "index_ansible_vars_on_step_id"
   end
 
@@ -62,18 +61,18 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   create_table "application_with_versions", force: :cascade do |t|
     t.integer "application_id"
     t.string "version"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "deleted_at", precision: nil
     t.index ["application_id"], name: "index_application_with_versions_on_application_id"
     t.index ["deleted_at"], name: "index_application_with_versions_on_deleted_at"
   end
 
   create_table "applications", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "deleted_at", precision: nil
     t.index ["deleted_at"], name: "index_applications_on_deleted_at"
     t.index ["name"], name: "index_applications_on_name"
   end
@@ -85,10 +84,10 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.boolean "accepted", default: false
     t.integer "release_order_id"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "sent", default: false
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.index ["deleted_at"], name: "index_approvals_on_deleted_at"
     t.index ["release_order_id"], name: "index_approvals_on_release_order_id"
     t.index ["user_id", "release_order_id"], name: "index_approvals_on_user_id_and_release_order_id", unique: true
@@ -99,26 +98,26 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   create_table "artifact_with_versions", force: :cascade do |t|
     t.integer "artifact_id"
     t.integer "version_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "artifacts", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "artifact_type", default: 0
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.index ["deleted_at"], name: "index_artifacts_on_deleted_at"
   end
 
   create_table "credentials", force: :cascade do |t|
     t.integer "sshkey_id"
     t.integer "depuser_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "comment"
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.string "name"
     t.index ["deleted_at"], name: "index_credentials_on_deleted_at"
     t.index ["depuser_id"], name: "index_credentials_on_depuser_id"
@@ -129,8 +128,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   create_table "deployment_pipeline_steps", force: :cascade do |t|
     t.integer "deployment_pipeline_id"
     t.integer "step_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "position"
     t.index ["deployment_pipeline_id", "step_id"], name: "step_pipeline_index", unique: true
     t.index ["deployment_pipeline_id"], name: "index_deployment_pipeline_steps_on_deployment_pipeline_id"
@@ -138,13 +137,13 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   end
 
   create_table "deployment_pipelines", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "name"
     t.integer "env_id"
     t.integer "position"
     t.boolean "template", default: true
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.text "description"
     t.index ["deleted_at"], name: "index_deployment_pipelines_on_deleted_at"
     t.index ["name"], name: "index_deployment_pipelines_on_name"
@@ -152,9 +151,9 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
 
   create_table "depusers", force: :cascade do |t|
     t.string "username", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "deleted_at", precision: nil
     t.index ["deleted_at"], name: "index_depusers_on_deleted_at"
   end
 
@@ -165,9 +164,9 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.integer "status", default: 0
     t.string "name"
     t.string "description"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "enabled", default: true
     t.index ["deleted_at"], name: "index_env_actions_on_deleted_at"
     t.index ["env_action_id"], name: "index_env_actions_on_env_action_id"
@@ -177,8 +176,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   create_table "env_credentials", force: :cascade do |t|
     t.integer "env_id"
     t.integer "credential_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["credential_id"], name: "index_env_credentials_on_credential_id"
     t.index ["env_id"], name: "index_env_credentials_on_env_id"
   end
@@ -186,8 +185,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   create_table "env_with_actions", force: :cascade do |t|
     t.integer "env_id"
     t.integer "env_action_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["env_action_id"], name: "index_env_with_actions_on_env_action_id"
     t.index ["env_id"], name: "index_env_with_actions_on_env_id"
   end
@@ -195,9 +194,9 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   create_table "envs", force: :cascade do |t|
     t.string "name", null: false
     t.integer "application_id"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "aws_tags"
     t.index ["application_id"], name: "index_envs_on_application_id"
     t.index ["deleted_at"], name: "index_envs_on_deleted_at"
@@ -212,9 +211,9 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.string "uuid", limit: 36
     t.string "data"
     t.integer "event_type", default: 1
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["deleted_at"], name: "index_events_on_deleted_at"
     t.index ["env_id"], name: "index_events_on_env_id"
     t.index ["uuid"], name: "index_events_on_uuid"
@@ -223,8 +222,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   create_table "host_applications", force: :cascade do |t|
     t.integer "host_id"
     t.integer "application_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["application_id"], name: "index_host_applications_on_application_id"
     t.index ["host_id"], name: "index_host_applications_on_host_id"
   end
@@ -232,8 +231,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   create_table "host_credentials", force: :cascade do |t|
     t.integer "host_id"
     t.integer "credential_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["credential_id"], name: "index_host_credentials_on_credential_id"
     t.index ["host_id"], name: "index_host_credentials_on_host_id"
   end
@@ -243,9 +242,9 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.string "name"
     t.string "ip"
     t.integer "env_id"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["deleted_at"], name: "index_hosts_on_deleted_at"
     t.index ["env_id"], name: "index_hosts_on_env_id"
     t.index ["fqdn", "env_id"], name: "index_hosts_on_fqdn_and_env_id", unique: true
@@ -256,10 +255,10 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.integer "project_id"
     t.string "name"
     t.string "description"
-    t.datetime "release_date"
+    t.datetime "release_date", precision: nil
     t.string "raw"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "moneta", id: false, force: :cascade do |t|
@@ -274,7 +273,7 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["item_type", "item_id"], name: "index_paper_trail_versions_on_item_type_and_item_id"
   end
 
@@ -283,16 +282,16 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.binary "content"
     t.string "fileable_type"
     t.integer "fileable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["fileable_type", "fileable_id"], name: "index_physical_files_on_fileable_type_and_fileable_id"
   end
 
   create_table "release_order_application_with_version_envs", force: :cascade do |t|
     t.integer "release_order_application_with_version_id"
     t.integer "env_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["env_id"], name: "env_ro_env"
     t.index ["release_order_application_with_version_id"], name: "env_ro_avw"
   end
@@ -306,8 +305,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.integer "release_order_id"
     t.integer "env_id"
     t.integer "status", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "application_id"
     t.integer "application_with_version_id"
     t.text "log", default: ""
@@ -317,17 +316,17 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   end
 
   create_table "release_orders", force: :cascade do |t|
-    t.datetime "start_date"
-    t.datetime "end_date"
+    t.datetime "start_date", precision: nil
+    t.datetime "end_date", precision: nil
     t.text "description"
     t.integer "release_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.binary "archive"
     t.integer "status"
     t.string "name"
     t.string "metadata", default: "{}"
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.index ["deleted_at"], name: "index_release_orders_on_deleted_at"
     t.index ["name"], name: "index_release_orders_on_name"
     t.index ["release_id"], name: "index_release_orders_on_release_id"
@@ -335,19 +334,19 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
 
   create_table "releases", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "status"
     t.string "metadata", default: "{}"
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.index ["deleted_at"], name: "index_releases_on_deleted_at"
   end
 
   create_table "settings", force: :cascade do |t|
     t.string "key"
     t.string "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "sshkeys", force: :cascade do |t|
@@ -360,10 +359,10 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.string "public_key", null: false
     t.string "ssh2_public_key"
     t.string "sha256_fingerprint", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "ssh_public_key"
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.string "name"
     t.index ["deleted_at"], name: "index_sshkeys_on_deleted_at"
     t.index ["name"], name: "index_sshkeys_on_name"
@@ -374,18 +373,18 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
     t.text "description"
     t.boolean "template"
     t.text "properties_description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "origin_step_template_id"
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.index ["deleted_at"], name: "index_steps_on_deleted_at"
   end
 
   create_table "subreleases", force: :cascade do |t|
     t.integer "release_id"
     t.integer "subrelease_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["release_id", "subrelease_id"], name: "index_subreleases_on_release_id_and_subrelease_id", unique: true
     t.index ["release_id"], name: "index_subreleases_on_release_id"
     t.index ["subrelease_id"], name: "index_subreleases_on_subrelease_id"
@@ -402,9 +401,9 @@ ActiveRecord::Schema.define(version: 2020_10_29_213233) do
   create_table "versions", force: :cascade do |t|
     t.integer "artifact_id"
     t.string "version"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "deleted_at", precision: nil
     t.index ["artifact_id"], name: "index_versions_on_artifact_id"
     t.index ["deleted_at"], name: "index_versions_on_deleted_at"
   end

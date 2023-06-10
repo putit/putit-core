@@ -3,16 +3,11 @@
 # Table name: versions
 #
 #  id          :integer          not null, primary key
-#  artifact_id :integer          indexed
+#  artifact_id :integer
 #  version     :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  deleted_at  :datetime         indexed
-#
-# Indexes
-#
-#  index_versions_on_artifact_id  (artifact_id)
-#  index_versions_on_deleted_at   (deleted_at)
+#  deleted_at  :datetime
 #
 
 class Version < ActiveRecord::Base

@@ -3,19 +3,13 @@
 # Table name: hosts
 #
 #  id         :integer          not null, primary key
-#  fqdn       :string           not null, indexed => [env_id]
+#  fqdn       :string           not null
 #  name       :string
 #  ip         :string
-#  env_id     :integer          indexed, indexed => [fqdn]
-#  deleted_at :datetime         indexed
+#  env_id     :integer
+#  deleted_at :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#
-# Indexes
-#
-#  index_hosts_on_deleted_at       (deleted_at)
-#  index_hosts_on_env_id           (env_id)
-#  index_hosts_on_fqdn_and_env_id  (fqdn,env_id) UNIQUE
 #
 
 class Host < ActiveRecord::Base

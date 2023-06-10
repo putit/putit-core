@@ -5,17 +5,12 @@
 #  id          :integer          not null, primary key
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  name        :string           indexed
+#  name        :string
 #  env_id      :integer
 #  position    :integer
 #  template    :boolean          default(TRUE)
-#  deleted_at  :datetime         indexed
+#  deleted_at  :datetime
 #  description :text
-#
-# Indexes
-#
-#  index_deployment_pipelines_on_deleted_at  (deleted_at)
-#  index_deployment_pipelines_on_name        (name)
 #
 
 describe DeploymentPipeline, type: :model do

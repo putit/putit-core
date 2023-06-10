@@ -3,15 +3,10 @@
 # Table name: applications
 #
 #  id         :integer          not null, primary key
-#  name       :string           indexed
+#  name       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  deleted_at :datetime         indexed
-#
-# Indexes
-#
-#  index_applications_on_deleted_at  (deleted_at)
-#  index_applications_on_name        (name)
+#  deleted_at :datetime
 #
 
 class Application < ActiveRecord::Base

@@ -4,23 +4,15 @@
 #
 #  id               :integer          not null, primary key
 #  name             :string
-#  uuid             :string(36)       indexed
+#  uuid             :string(36)
 #  email            :string
 #  accepted         :boolean          default(FALSE)
-#  release_order_id :integer          indexed, indexed => [user_id]
-#  user_id          :integer          indexed, indexed => [release_order_id]
+#  release_order_id :integer
+#  user_id          :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  sent             :boolean          default(FALSE)
-#  deleted_at       :datetime         indexed
-#
-# Indexes
-#
-#  index_approvals_on_deleted_at                    (deleted_at)
-#  index_approvals_on_release_order_id              (release_order_id)
-#  index_approvals_on_user_id                       (user_id)
-#  index_approvals_on_user_id_and_release_order_id  (user_id,release_order_id) UNIQUE
-#  index_approvals_on_uuid                          (uuid)
+#  deleted_at       :datetime
 #
 
 class Approval < ActiveRecord::Base

@@ -6,11 +6,7 @@
 #  username   :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  deleted_at :datetime         indexed
-#
-# Indexes
-#
-#  index_depusers_on_deleted_at  (deleted_at)
+#  deleted_at :datetime
 #
 
 class Depuser < ActiveRecord::Base

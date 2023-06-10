@@ -7,11 +7,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  artifact_type :integer          default("flat")
-#  deleted_at    :datetime         indexed
-#
-# Indexes
-#
-#  index_artifacts_on_deleted_at  (deleted_at)
+#  deleted_at    :datetime
 #
 
 class Artifact < ActiveRecord::Base

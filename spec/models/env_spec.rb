@@ -3,18 +3,12 @@
 # Table name: envs
 #
 #  id             :integer          not null, primary key
-#  name           :string           not null, indexed => [application_id]
-#  application_id :integer          indexed, indexed => [name]
-#  deleted_at     :datetime         indexed
+#  name           :string           not null
+#  application_id :integer
+#  deleted_at     :datetime
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  aws_tags       :string
-#
-# Indexes
-#
-#  index_envs_on_application_id           (application_id)
-#  index_envs_on_deleted_at               (deleted_at)
-#  index_envs_on_name_and_application_id  (name,application_id) UNIQUE
 #
 
 describe Env, type: :model do

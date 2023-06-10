@@ -6,20 +6,14 @@
 #  start_date  :datetime
 #  end_date    :datetime
 #  description :text
-#  release_id  :integer          indexed
+#  release_id  :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  archive     :binary
 #  status      :integer
-#  name        :string           indexed
+#  name        :string
 #  metadata    :string           default({})
-#  deleted_at  :datetime         indexed
-#
-# Indexes
-#
-#  index_release_orders_on_deleted_at  (deleted_at)
-#  index_release_orders_on_name        (name)
-#  index_release_orders_on_release_id  (release_id)
+#  deleted_at  :datetime
 #
 
 class ReleaseOrder < ActiveRecord::Base

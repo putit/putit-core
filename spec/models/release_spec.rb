@@ -8,11 +8,7 @@
 #  updated_at :datetime         not null
 #  status     :integer
 #  metadata   :string           default({})
-#  deleted_at :datetime         indexed
-#
-# Indexes
-#
-#  index_releases_on_deleted_at  (deleted_at)
+#  deleted_at :datetime
 #
 
 describe Release, type: :model do

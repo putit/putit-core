@@ -3,22 +3,16 @@
 # Table name: events
 #
 #  id         :integer          not null, primary key
-#  env_id     :integer          indexed
+#  env_id     :integer
 #  source     :string
 #  status     :integer
 #  severity   :integer
-#  uuid       :string(36)       indexed
+#  uuid       :string(36)
 #  data       :string
-#  event_type :integer          default("operational")
-#  deleted_at :datetime         indexed
+#  event_type :integer          default("performance")
+#  deleted_at :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#
-# Indexes
-#
-#  index_events_on_deleted_at  (deleted_at)
-#  index_events_on_env_id      (env_id)
-#  index_events_on_uuid        (uuid)
 #
 
 class Event < ActiveRecord::Base

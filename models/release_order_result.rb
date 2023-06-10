@@ -3,20 +3,14 @@
 # Table name: release_order_results
 #
 #  id                          :integer          not null, primary key
-#  release_order_id            :integer          indexed, indexed => [env_id, application_id]
-#  env_id                      :integer          indexed, indexed => [release_order_id, application_id]
+#  release_order_id            :integer
+#  env_id                      :integer
 #  status                      :integer          default("unknown")
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
-#  application_id              :integer          indexed => [release_order_id, env_id]
+#  application_id              :integer
 #  application_with_version_id :integer
 #  log                         :text             default("")
-#
-# Indexes
-#
-#  index_release_order_results_on_env_id            (env_id)
-#  index_release_order_results_on_release_order_id  (release_order_id)
-#  uniq_result                                      (release_order_id,env_id,application_id) UNIQUE
 #
 
 class ReleaseOrderResult < ActiveRecord::Base

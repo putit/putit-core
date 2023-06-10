@@ -76,6 +76,8 @@ class ApplicationController < SecureController
   end
 
   get '/' do
+    cu = RequestStore.fetch(:current_user)
+    binding.irb
     content_type :json
     param :include, String, is: 'envs', required: false, raise: true
 

@@ -10,11 +10,7 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  origin_step_template_id :integer
-#  deleted_at              :datetime         indexed
-#
-# Indexes
-#
-#  index_steps_on_deleted_at  (deleted_at)
+#  deleted_at              :datetime
 #
 
 describe Step, type: :model do

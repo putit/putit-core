@@ -3,13 +3,9 @@
 # Table name: ansible_files
 #
 #  id         :integer          not null, primary key
-#  step_id    :integer          indexed
+#  step_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#
-# Indexes
-#
-#  index_ansible_files_on_step_id  (step_id)
 #
 
 class AnsibleFiles < ActiveRecord::Base

@@ -3,16 +3,11 @@
 # Table name: application_with_versions
 #
 #  id             :integer          not null, primary key
-#  application_id :integer          indexed
+#  application_id :integer
 #  version        :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  deleted_at     :datetime         indexed
-#
-# Indexes
-#
-#  index_application_with_versions_on_application_id  (application_id)
-#  index_application_with_versions_on_deleted_at      (deleted_at)
+#  deleted_at     :datetime
 #
 
 class ApplicationWithVersion < ActiveRecord::Base
