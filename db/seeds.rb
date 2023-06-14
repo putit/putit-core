@@ -19,6 +19,8 @@ DeploymentPipeline.destroy_all
 DeploymentPipelineStep.destroy_all
 User.destroy_all
 
+organization = Organization.create!(name: 'putit')
+
 # Create users for apprivals
 User.create!(email: 'approver1@putit.io')
 User.create!(email: 'approver2@putit.io')
@@ -32,7 +34,7 @@ closed_release = Release.create!(name: 'Closed release')
 closed_release.closed!
 
 # Create first application ...
-application_1 = Application.create!(name: 'WEBv1')
+application_1 = Application.create!(name: 'WEBv1', organization_id: organization.id)
 # ... add two versions to it...
 app_1_v1 = application_1.versions.create!(version: '1.0.0')
 app_1_v2 = application_1.versions.create!(version: '2.0.0')
@@ -71,7 +73,7 @@ env_prod.pipelines << copy_files_pipeline_template.amoeba_dup
 env_prod.pipelines << send_notification_pipeline_template.amoeba_dup
 
 # Create second application with one version
-application_2 = Application.create!(name: 'TEST APPLICATION')
+application_2 = Application.create!(name: 'TEST APPLICATION', organization_id: organization.id)
 env_test = application_2.envs.create!(name: 'test')
 env_test.pipelines << copy_files_pipeline_template.amoeba_dup
 env_test.pipelines << send_notification_pipeline_template.amoeba_dup
