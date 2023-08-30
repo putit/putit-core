@@ -144,7 +144,7 @@ set_vars() {
   fi
 
   log "INFO" "Checking if Bundler is installed..."
-  local is_bundler=$(bundler -v 2>/dev/null | grep -Ec 'Bundler version 2.1.4|Bundler version 2.2.*|Bundler version 2.3.*')
+  local is_bundler=$(bundler -v 2>/dev/null | grep -Ec 'Bundler version 2.*)
   if [ ${is_bundler} -ne 1 ]; then
     log "ERROR" "Required version of Bundler not found in your Ruby distribution. Please install Bundler 2.1.4 or greater."
     exit 1
