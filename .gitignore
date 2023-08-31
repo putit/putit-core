@@ -6,7 +6,12 @@ logs/*
 vendor
 *_logger
 db/*.sqlite3
-config/database.yml-origin
 .ruby-version
-config/settings.yml
 .DS_Store
+
+# app specific - comes from the templates
+config/thin.yml
+bin/run.sh
+config/database.yml-origin
+config/settings.yml
+.bundle/config
