@@ -11,7 +11,7 @@ $ curl -H "Content-Type: application/json" -X POST http://localhost:3000/users -
 2. Authenticate user
 
 ```bash
-$ curl -H "Content-Type: application/json" -X POST http://localhost:3000/users/sign_in --data $(jo user=$(jo email=test11@putit.io password=123qwe password_confirmation=123qwe))
+$ curl -H "Content-Type: application/json" -X POST http://localhost:3000/users/sign_in --data $(jo user=$(jo email=test11@putit.io password=123qwe))
 ```
 
 3. Query `putit-core` for applications

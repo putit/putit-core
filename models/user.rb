@@ -36,4 +36,6 @@
 
 class User < ActiveRecord::Base
   establish_connection :users
+
+  belongs_to :organization
 end

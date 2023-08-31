@@ -8,6 +8,8 @@
 #  updated_at :datetime         not null
 #
 class Organization < ActiveRecord::Base
+  establish_connection :users
+
   validates_presence_of :name
   validates_uniqueness_of :name
 
