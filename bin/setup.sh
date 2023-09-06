@@ -8,6 +8,7 @@ get_help() {
   echo -e "\t --build-only     - only install and build dependencies"
   echo -e "\t --db-only        - only setup database"
   echo -e "\t --config-only    - only setup config files"
+  echo -e "\t --with-development-gems - build with development gems group"
   echo -e "\t --help|-h        - show this message"
 }
 
@@ -45,6 +46,14 @@ parse_args() {
           config-only)
             if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then
               PUTIT_CONFIG_ONLY=true
+            else
+              get_help
+              exit 1
+            fi
+            ;;
+          with-development-gems)
+            if [ -z ${!OPTIND+x} ] || [[ ${!OPTIND} =~ ${regex} ]]; then
+              PUTIT_WITH_DEV_GEMS=true
             else
               get_help
               exit 1
@@ -135,7 +144,7 @@ set_vars() {
   fi
 
   log "INFO" "Checking if Bundler is installed..."
-  local is_bundler=$(bundler -v 2>/dev/null | grep -Ec 'Bundler version 2.1.4|Bundler version 2.2.*|Bundler version 2.3.*')
+  local is_bundler=$(bundler -v 2>/dev/null | grep -Ec 'Bundler version 2.*')
   if [ ${is_bundler} -ne 1 ]; then
     log "ERROR" "Required version of Bundler not found in your Ruby distribution. Please install Bundler 2.1.4 or greater."
     exit 1
@@ -158,8 +167,8 @@ set_config() {
   local run_script_template="${PUTIT_APP_DIR}/bin/run.sh.template"
   local thin_config_template="${CONFIG_DIR}/thin.yml.template"
   local thin_config="${CONFIG_DIR}/thin.yml"
-  local settings="${CONFIG_DIR}/settings.yml"
-  local settings_template="${CONFIG_DIR}/settings.yml.template"
+  local app_settings="${CONFIG_DIR}/settings.yml"
+  local app_settings_template="${CONFIG_DIR}/settings.yml.template"
 
   # application name from thin template tag value
   if [ -f ${thin_config_template} ]; then
@@ -172,37 +181,36 @@ set_config() {
   fi
 
   #thin.yml
-  if [ -f ${thin_config_template} ]; then
+  if [ ! -f ${thin_config} ]; then
     sed -e s,APP_DIR,${PUTIT_APP_DIR}, -i ${thin_config_template}
     sed -e s,APP_USER,${APP_USER}, -i ${thin_config_template}
     sed -e s,APP_GROUP,${APP_USER}, -i ${thin_config_template}
-    mv ${thin_config_template} ${thin_config}
+    # keep template as thing.yml is in .gitignore
+    cp ${thin_config_template} ${thin_config}
+    sed -e s,APP_DIR,${PUTIT_APP_DIR}, -i ${thin_config}
+    sed -e s,APP_USER,${APP_USER}, -i ${thin_config}
+    sed -e s,APP_GROUP,${APP_USER}, -i ${thin_config}
   elif [ -f ${thin_config} ]; then
     log "WARNING" "Thin server seems to be already configured, skipping..."
-  else
-    log "ERROR" "Thin server config file and its template are missing!"
-    exit 1
   fi
 
   #settings.yml (only for putit-core)
   if [ ${putit_app_name} == "putit-core" ]; then
-    if [ -f ${settings_template} ]; then
+    if [ ! -f ${app_settings} ]; then
       local plugins_path="$(dirname ${PUTIT_APP_DIR})/putit-plugins"
-      sed -e s,PLUGINS_PATH_TEMPLATE,${plugins_path}, -i ${settings_template}
-      mv ${settings_template} ${settings}
-    elif [ -f ${settings} ]; then
+      # keep template as thing.yml is in .gitignore
+      cp ${app_settings_template} ${app_settings}
+      sed -e s,PLUGINS_PATH_TEMPLATE,${plugins_path}, -i ${app_settings}
+    elif [ -f ${app_settings} ]; then
       log "WARNING" "Settings file seems to be already configured, skipping..."
-    else
-      log "ERROR" "Settings file and its template are missing!"
-      exit 1
     fi
   fi
 
   # run.sh
   if [ -f ${run_script_template} ]; then
-    sed -e s,APP_DIR_TEMPLATE,${PUTIT_APP_DIR}, -i ${run_script_template}
-    sed -e s,APP_NAME_TEMPLATE,${putit_app_name}, -i ${run_script_template}
-    mv ${run_script_template} ${run_script}
+    cp ${run_script_template} ${run_script}
+    sed -e s,APP_DIR_TEMPLATE,${PUTIT_APP_DIR}, -i ${run_script}
+    sed -e s,APP_NAME_TEMPLATE,${putit_app_name}, -i ${run_script}
     chmod +x ${run_script}
   elif [ -f ${run_script} ]; then
     log "WARNING" "Start script seems to be already configured, skipping..."
@@ -216,7 +224,11 @@ install_gems() {
   log "INFO" "Installing gems..."
 
   bundler config --local path lib/gems >> ${PUTIT_LOG_FILE}
-  bundler config --local without development >> ${PUTIT_LOG_FILE}
+  if [ ! -z ${PUTIT_WITH_DEV_GEMS+x} ] && [ "${PUTIT_WITH_DEV_GEMS}" ]; then
+    bundler config --local with development >> ${PUTIT_LOG_FILE}
+  else
+    bundler config --local without development >> ${PUTIT_LOG_FILE}
+  fi
 
   if ! [ -z ${SQLITE3_PATH+x} ]; then
     log "INFO" "Using SQLite3 libraries from ${SQLITE3_PATH}..."
