@@ -1,3 +1,5 @@
+require 'pry'
+
 class ApplicationController < SecureController
   include Wisper::Publisher
 
@@ -81,6 +83,7 @@ class ApplicationController < SecureController
 
     query = Application
 
+    binding.pry
     to_json_options = {}
     if params[:include]
       to_json_options[:include] = {}

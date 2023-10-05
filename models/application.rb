@@ -23,8 +23,11 @@ class Application < ActiveRecord::Base
 
   has_many :release_order_results
 
+  belongs_to :organization
+
   has_paper_trail versions: { class_name: 'PaperTrailVersion', 
                               name: :paper_trail_versions }
+
 
   def serializable_hash(options = {})
     result = super(options)

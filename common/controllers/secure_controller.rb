@@ -42,7 +42,7 @@ class SecureController < PutitController
 
     JWT.decode encoded_token, user.secret_key, true, algorithm: options[:alg]
     RequestStore.store[:current_user] ||= user.email
-    RequestStore.store[:organization] ||= Organization.find(1)
+    RequestStore.store[:organization] ||= user.organization
     logger.info("User \"#{user.email}\" authorized.", user_type: payload[:user_type])
     true
   rescue StandardError

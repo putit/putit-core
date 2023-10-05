@@ -17,5 +17,5 @@ $ curl -H "Content-Type: application/json" -X POST http://localhost:3000/users/s
 3. Query `putit-core` for applications
 
 ```bash
-$ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoidGVzdDEyQHB1dGl0LmlvIiwidXNlcl90eXBlIjoid2ViIiwiZXhwIjoxNjg2MTI4MDk3LCJpYXQiOjE2ODYwODQ4OTcsImp0aSI6IjI1Y2IyZDIwNTM1NjAwMmM0NDhiZjY2ZGExNzdkNjkyYTg4ZTAyNjJhMGZlNzQ5OTE4OTFmMmM0NGIxYjVjOTAifQ.bPKxX9qof7rhQY0uMaKFziiVgVJOGA69X9XyzX2hrxw" localhost:9292/application 
+$ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoidGVzdDExQHB1dGl0LmlvIiwidXNlcl90eXBlIjoid2ViIiwiZXhwIjoxNjk2NTc5MzAxLCJpYXQiOjE2OTY1MzYxMDEsImp0aSI6IjMxOWNiMzdiMzRkZDc0NGIyNTM1ZTczYTU3ZjhmNzViZjVmNTdmM2ZlMjI5OGJkNjgyYmJlMDAxMWE0OTlkNjcifQ.KFSuSmlUoaEfE4qZYz5IqW1rj8t11rpuNRrWOSbmb24" localhost:9292/application 
 ```

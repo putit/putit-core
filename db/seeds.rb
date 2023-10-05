@@ -18,6 +18,7 @@ ReleaseOrderApplicationWithVersion.destroy_all
 DeploymentPipeline.destroy_all
 DeploymentPipelineStep.destroy_all
 User.destroy_all
+Organization.destroy_all
 
 organization = Organization.create!(name: 'putit')
 
